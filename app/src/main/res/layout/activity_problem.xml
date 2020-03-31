@@ -29,6 +29,16 @@
         app:srcCompat="@drawable/cow_rocket_hmpg"
         android:contentDescription="@string/todo" />
 
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/info_but" />
+
     <TextView
         android:id="@+id/ProblemTitle"
         android:layout_width="252dp"

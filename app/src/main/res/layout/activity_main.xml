@@ -114,8 +114,10 @@
         android:id="@+id/imageView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/info_but"
-        tools:layout_editor_absoluteX="307dp"
-        tools:layout_editor_absoluteY="23dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/info_but" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
