@@ -6,8 +6,8 @@
     <string name="add_problem">Add Problem</string>
     <string name="problem_title">Problem Title</string>
     <string name="choose_ncategory">Choose Category</string>
-    <string name="add_nphoto">Add Photo</string>
     <string name="describe_problem">Describe Problem</string>
     <string name="todo">TODO</string>
     <string name="back_prblm">back_prblm</string>
+    <string name="add_nphoto">Add Photo</string>
 </resources>

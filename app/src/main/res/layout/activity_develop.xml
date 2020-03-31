@@ -13,8 +13,10 @@
         android:contentDescription="@string/back_prblm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/back_main" />
 
     <ImageView
@@ -22,12 +24,13 @@
         android:layout_width="237dp"
         android:layout_height="403dp"
         android:layout_marginTop="217dp"
-        android:layout_marginEnd="228dp"
+        android:layout_marginEnd="227dp"
+        android:contentDescription="@string/todo"
         android:rotation="15"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cow_rocket_hmpg"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/cow_rocket_hmpg" />
 
     <TextView
         android:id="@+id/DevelopTitle"
@@ -48,49 +51,48 @@
         android:id="@+id/frmDvlpTitle"
         android:layout_width="308dp"
         android:layout_height="54dp"
+        android:autofillHints=""
         android:background="@drawable/emty_fld"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Yout Skill\Tool"
         android:textColor="#8E8E8E"
         android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/frmDvlpDes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.255"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/DevelopTitle"
+        app:layout_constraintVertical_bias="0.255" />
 
     <Button
         android:id="@+id/butPhotoDvlp"
-        android:layout_width="117dp"
-        android:layout_height="63dp"
+        android:layout_width="134dp"
+        android:layout_height="72dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/add_photo_but"
         android:text="@string/add_nphoto"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/frmDvlpDes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.392" />
+        app:layout_constraintTop_toBottomOf="@+id/frmDvlpTitle"
+        app:layout_constraintVertical_bias="0.478" />
 
     <Button
         android:id="@+id/butRecDvlp"
-        android:layout_width="117dp"
-        android:layout_height="63dp"
+        android:layout_width="134dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="34dp"
         android:background="@drawable/add_rec_but"
         android:text="Record\nIdea"
         android:textAlignment="gravity"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0576"
+        app:layout_constraintBottom_toTopOf="@+id/frmDvlpDes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.392" />
+        app:layout_constraintTop_toBottomOf="@+id/frmDvlpTitle"
+        app:layout_constraintVertical_bias="2" />
 
     <EditText
         android:id="@+id/frmDvlpDes"
