@@ -6,12 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".Rate">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/back_prblm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_main" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="237dp"
+        android:layout_height="403dp"
+        android:layout_marginTop="217dp"
+        android:layout_marginEnd="228dp"
+        android:rotation="15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cow_rocket_hmpg"
+        android:contentDescription="@string/todo" />
+
     <TextView
         android:id="@+id/DevelopTitle"
         android:layout_width="252dp"
         android:layout_height="61dp"
         android:text="Rate Solution"
         android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,6 +49,7 @@
         android:layout_width="233dp"
         android:layout_height="36dp"
         android:orientation="horizontal"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
@@ -38,7 +63,8 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="1"
-            android:textSize="25dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
         <RadioButton
             android:id="@+id/radioButton2"
@@ -46,7 +72,8 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="2"
-            android:textSize="25dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
         <RadioButton
             android:id="@+id/radioButton3"
@@ -54,7 +81,8 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="3"
-            android:textSize="25dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
         <RadioButton
             android:id="@+id/radioButton4"
@@ -62,7 +90,8 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="4"
-            android:textSize="25dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
         <RadioButton
             android:id="@+id/radioButton5"
@@ -70,7 +99,8 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:text="5"
-            android:textSize="25dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
     </RadioGroup>
 
