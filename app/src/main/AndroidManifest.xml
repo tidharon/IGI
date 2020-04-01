@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/igi_ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Problem"></activity>
-        <activity android:name=".Solution"></activity>
-        <activity android:name=".Rate"></activity>
-        <activity android:name=".Develop"></activity>
+        <activity android:name=".InfoPage"></activity>
+        <activity android:name=".Problem" />
+        <activity android:name=".Solution" />
+        <activity android:name=".Rate" />
+        <activity android:name=".Develop" />
         <activity android:name=".HomeScreen" />
         <activity android:name=".signup" />
         <activity android:name=".MainActivity">

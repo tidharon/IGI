@@ -2,6 +2,7 @@ package com.example.igi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,12 +13,14 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     Button butToSolution;
     Button butToRate;
     Button butToDevelop;
-
+    Button butInfo;
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-
+butInfo = (Button)findViewById(R.id.info_but);
+butInfo.setOnClickListener(this);
 butToDiscover = (Button)findViewById(R.id.butToDiscover);
 butToDiscover.setOnClickListener(this);
 butToSolution = (Button)findViewById(R.id.butToSolution);
@@ -48,6 +51,11 @@ butToDevelop.setOnClickListener(this);
         if (v==butToDevelop){
             Intent intentDevelop = new Intent(this, Develop.class);
             startActivity(intentDevelop);
+            finish();
+        }
+        if (v==butInfo) {
+            Intent intentDiscover = new Intent(this, InfoPage.class);
+            startActivity(intentDiscover);
             finish();
         }
     }
