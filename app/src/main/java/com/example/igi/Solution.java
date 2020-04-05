@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Solution extends AppCompatActivity implements View.OnClickListener {
     Button butPhotoSltn;
     Button butRecSltn;
-    Button butInfo;
+    ImageView butInfo;
     Button butSubmit;
     Spinner listProblem;
     ArrayAdapter<String> problemArray;
@@ -28,7 +29,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         butPhotoSltn.setOnClickListener(this);
         butRecSltn = (Button) findViewById(R.id.butRecSltn);
         butRecSltn.setOnClickListener(this);
-        butInfo = (Button) findViewById(R.id.info_but);
+        butInfo = (ImageView) findViewById(R.id.info_but);
         butInfo.setOnClickListener(this);
         butSubmit = (Button) findViewById(R.id.submit_but);
         butInfo.setOnClickListener(this);

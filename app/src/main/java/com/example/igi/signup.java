@@ -8,10 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class signup extends AppCompatActivity implements OnClickListener{
     Button butSignUp;
-Button butInfo;
+ImageView butInfo;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ Button butInfo;
 
         butSignUp = (Button)findViewById(R.id.ButSingUp);
         butSignUp.setOnClickListener(this);
-        butInfo = (Button)findViewById(R.id.info_but);
+        butInfo = (ImageView) findViewById(R.id.info_but);
         butInfo.setOnClickListener(this);
     }
 

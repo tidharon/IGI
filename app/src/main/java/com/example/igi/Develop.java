@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +14,7 @@ import static com.example.igi.R.*;
 public class Develop extends AppCompatActivity implements View.OnClickListener {
 Button butPhotoDvlp;
 Button butRecDvlp;
-Button butInfo;
+ImageView butInfo;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ Button butInfo;
         butPhotoDvlp.setOnClickListener(this);
         butRecDvlp = (Button)findViewById(id.butRecDvlp);
         butRecDvlp.setOnClickListener(this);
-        butInfo = (Button)findViewById(id.info_but);
+        butInfo = (ImageView) findViewById(id.info_but);
         butInfo.setOnClickListener(this);
 
 
