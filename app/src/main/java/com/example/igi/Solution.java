@@ -105,6 +105,8 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             } catch (Exception error) {
                 Log.d(TAG, "Image could not be saved");
             }
+            Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
+
         }
     }
 }

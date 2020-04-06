@@ -67,7 +67,6 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-        Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,7 +95,8 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             } catch (Exception error) {
                 Log.d(TAG,"Image could not be saved");
             }
-            //Log.d(tag, "image recieved");
+            Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
+
         }
     }
 }

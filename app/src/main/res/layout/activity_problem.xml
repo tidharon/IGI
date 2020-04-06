@@ -82,9 +82,10 @@
                 android:autofillHints=""
                 android:background="@drawable/emty_fld"
                 android:ems="10"
+                android:hint="  Problem Title"
                 android:inputType="textPersonName"
-                android:text="@string/problem_title"
-                android:textColor="#8E8E8E"
+                android:textColor="#000000"
+                android:textColorHint="#8E8E8E"
                 android:textSize="28sp" />
 
             <Space
@@ -135,9 +136,10 @@
                 android:background="@drawable/des_frm_90"
                 android:ems="10"
                 android:gravity="start|top"
+                android:hint="  Describe Problem"
                 android:inputType="textMultiLine"
-                android:text="@string/describe_problem"
-                android:textColor="#8E8E8E"
+                android:textColor="#000000"
+                android:textColorHint="#8E8E8E"
                 android:textSize="28sp" />
 
             <Space
