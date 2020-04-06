@@ -67,6 +67,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+        Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
