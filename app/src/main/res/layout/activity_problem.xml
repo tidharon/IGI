@@ -58,13 +58,14 @@
     <ScrollView
         android:layout_width="308dp"
         android:layout_height="502dp"
-        android:layout_marginTop="138dp"
+        android:layout_marginTop="30dp"
         android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/ProblemTitle">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,6 +51,9 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         }
         if (v == butPhotoPrblm){
             TakePicture();
+        }
+        if (v==butSubmit){
+            Toast.makeText(getApplicationContext(), "Problem Saved!", Toast.LENGTH_SHORT).show();
         }
     }
 

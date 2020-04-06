@@ -22,12 +22,12 @@
         android:id="@+id/imageView10"
         android:layout_width="237dp"
         android:layout_height="403dp"
-        android:layout_marginTop="217dp"
-        android:layout_marginEnd="228dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="200dp"
         android:contentDescription="@string/todo"
         android:rotation="15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/SolutionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/SolutionTitle"
         app:srcCompat="@drawable/cow_rocket_hmpg" />
 
     <ImageView
@@ -58,14 +58,15 @@
     <ScrollView
         android:layout_width="308dp"
         android:layout_height="502dp"
-        android:layout_marginTop="138dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/SolutionTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
