@@ -21,10 +21,6 @@ ImageView butInfo;
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_develop);
 
-        butPhotoDvlp = (Button)findViewById(id.butPhotoDvlp);
-        butPhotoDvlp.setOnClickListener(this);
-        butRecDvlp = (Button)findViewById(id.butRecDvlp);
-        butRecDvlp.setOnClickListener(this);
         butInfo = (ImageView) findViewById(id.info_but);
         butInfo.setOnClickListener(this);
 
@@ -36,7 +32,6 @@ ImageView butInfo;
         if (v==butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
-            finish();
         }
 
     }

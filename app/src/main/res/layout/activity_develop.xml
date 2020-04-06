@@ -8,9 +8,10 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:contentDescription="@string/back_prblm"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -57,70 +58,82 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.091" />
 
-    <EditText
-        android:id="@+id/frmDvlpTitle"
+    <ScrollView
         android:layout_width="308dp"
-        android:layout_height="54dp"
-        android:autofillHints=""
-        android:background="@drawable/emty_fld"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Yout Skill\Tool"
-        android:textColor="#8E8E8E"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toTopOf="@+id/frmDvlpDes"
+        android:layout_height="502dp"
+        android:layout_marginTop="138dp"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DevelopTitle"
-        app:layout_constraintVertical_bias="0.255" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/butPhotoDvlp"
-        android:layout_width="134dp"
-        android:layout_height="72dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/add_photo_but"
-        android:text="@string/add_nphoto"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/frmDvlpDes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frmDvlpTitle"
-        app:layout_constraintVertical_bias="0.478" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/butRecDvlp"
-        android:layout_width="134dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="34dp"
-        android:background="@drawable/add_rec_but"
-        android:text="Record\nIdea"
-        android:textAlignment="gravity"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/frmDvlpDes"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frmDvlpTitle"
-        app:layout_constraintVertical_bias="2" />
+            <EditText
+                android:id="@+id/frmDvlpTitle"
+                android:layout_width="308dp"
+                android:layout_height="54dp"
+                android:autofillHints=""
+                android:background="@drawable/emty_fld"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="  Yout Skill or Tool"
+                android:textColor="#8E8E8E"
+                android:textSize="28sp"
+                app:layout_constraintBottom_toTopOf="@+id/frmDvlpDes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/DevelopTitle"
+                app:layout_constraintVertical_bias="0.255" />
 
-    <EditText
-        android:id="@+id/frmDvlpDes"
-        android:layout_width="306dp"
-        android:layout_height="284dp"
-        android:layout_marginStart="4dp"
-        android:background="@drawable/des_frm_90"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:text="@string/describe_problem"
-        android:textColor="#8E8E8E"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.907" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/frmDvlpDes"
+                android:layout_width="306dp"
+                android:layout_height="284dp"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/des_frm_90"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:text="  Description"
+                android:textColor="#8E8E8E"
+                android:textSize="28sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.48"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.907" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/dvlpSubmitBut"
+                android:layout_width="172dp"
+                android:layout_height="52dp"
+                android:background="@drawable/but_bkgrnd"
+                android:baselineAligned="false"
+                android:text="Submit"
+                android:textColor="#FFFFFF"
+                android:textSize="31sp" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,7 +28,6 @@ public class Rate extends AppCompatActivity implements View.OnClickListener, Rad
         if (v == butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
-            finish();
         }
     }
 

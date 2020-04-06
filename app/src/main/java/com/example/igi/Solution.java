@@ -45,7 +45,6 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         if (v == butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
-            finish();
         }
     }
 }

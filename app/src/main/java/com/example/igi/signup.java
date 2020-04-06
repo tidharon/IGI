@@ -35,7 +35,6 @@ ImageView butInfo;
         if (v==butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
-            finish();
         }
      }
 }

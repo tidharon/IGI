@@ -8,25 +8,29 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
         android:contentDescription="@string/back_prblm"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/back_main" />
 
     <ImageView
         android:id="@+id/imageView10"
         android:layout_width="237dp"
         android:layout_height="403dp"
-        android:layout_marginTop="217dp"
-        android:layout_marginEnd="228dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="200dp"
         android:contentDescription="@string/todo"
         android:rotation="15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/DevelopTitle"
+        app:layout_constraintTop_toBottomOf="@id/DevelopTitle"
         app:srcCompat="@drawable/cow_rocket_hmpg" />
 
     <ImageView
@@ -58,9 +62,7 @@
         android:id="@+id/problemList"
         android:layout_width="292dp"
         android:layout_height="80dp"
-        android:layout_marginStart="34dp"
         android:layout_marginTop="170dp"
-        android:layout_marginEnd="34dp"
         android:layout_weight="1"
         android:background="@drawable/cardview_but"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,13 +73,10 @@
         android:id="@+id/solutionList"
         android:layout_width="292dp"
         android:layout_height="80dp"
-        android:layout_marginStart="34dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="34dp"
         android:layout_weight="1"
         android:background="@drawable/cardview_but"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/problemList" />
 
@@ -85,16 +84,14 @@
         android:id="@+id/voteSltnBut"
         android:layout_width="220dp"
         android:layout_height="186dp"
-        android:layout_marginStart="70dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="70dp"
         android:background="@drawable/vote_sltn_but"
         android:text="Add \n Vote"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/solutionList" />
 

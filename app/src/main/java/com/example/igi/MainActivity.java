@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
-            finish();
         }
     }
 }
