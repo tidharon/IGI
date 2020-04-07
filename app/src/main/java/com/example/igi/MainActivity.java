@@ -35,13 +35,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO, CAMERA}, RequestPermissionCode);
     }
+
     public static final int RequestPermissionCode = 1;
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case RequestPermissionCode:
-                if (grantResults.length> 0) {
+                if (grantResults.length > 0) {
                     boolean StoragePermission = grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED;
                     boolean RecordPermission = grantResults[1] ==
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(MainActivity.this, "Permission Granted",
                                 Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(MainActivity.this,"Permission Denied",
+                        Toast.makeText(MainActivity.this, "Permission Denied",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
@@ -74,14 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(Tag,"started");
+        Log.d(Tag, "started");
 
-        if(!checkPermission()) {
+        if (!checkPermission()) {
             requestPermission();
         }
 
@@ -105,11 +106,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == butToSignUp) {
             Intent intentLogin = new Intent(this, signup.class);
             startActivity(intentLogin);
-            finish();
         }
         if (v == butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
+        }
+    }
+
+    /*
+    Double back press to exit app
+     */
+    private static long back_pressed;
+
+    @Override
+    public void onBackPressed() {
+        if (back_pressed + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();
+            back_pressed = System.currentTimeMillis();
         }
     }
 }

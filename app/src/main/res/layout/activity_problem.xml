@@ -56,9 +56,9 @@
         app:layout_constraintVertical_bias="0.091" />
 
     <ScrollView
-        android:layout_width="308dp"
-        android:layout_height="502dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,15 +70,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:foregroundGravity="center_horizontal"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
             <EditText
                 android:id="@+id/frmPrblmTitle"
-                android:layout_width="308dp"
-                android:layout_height="54dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:background="@drawable/emty_fld"
                 android:ems="10"
@@ -110,7 +109,7 @@
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1" />
 
                 <Button
@@ -147,15 +146,31 @@
                 android:layout_height="16dp"
                 android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/submit_but"
-                android:layout_width="172dp"
-                android:layout_height="52dp"
-                android:background="@drawable/but_bkgrnd"
-                android:baselineAligned="false"
-                android:text="Submit"
-                android:textColor="#FFFFFF"
-                android:textSize="31sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/submit_but"
+                    android:layout_width="172dp"
+                    android:layout_height="52dp"
+                    android:background="@drawable/but_bkgrnd"
+                    android:baselineAligned="false"
+                    android:text="Submit"
+                    android:textColor="#FFFFFF"
+                    android:textSize="31sp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -20,10 +20,9 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="407dp"
-        android:layout_height="578dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView5"
         app:srcCompat="@drawable/fire_home" />
@@ -40,8 +39,8 @@
 
     <Button
         android:id="@+id/butToDiscover"
-        android:layout_width="293dp"
-        android:layout_height="78dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/hp_but_prblm"
         android:text="Disovered A \nProblem"
         android:textAlignment="gravity"
@@ -49,30 +48,28 @@
         android:textSize="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.284" />
+        app:layout_constraintTop_toBottomOf="@+id/titleHomeScreen"
+        app:layout_constraintVertical_bias="0.096" />
 
     <Button
         android:id="@+id/butToSolution"
-        android:layout_width="293dp"
-        android:layout_height="78dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/hp_but_sltn"
         android:text="Got \nsolution"
         android:textColor="#FFFFFF"
         android:textSize="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintTop_toBottomOf="@+id/butToDiscover"
+        app:layout_constraintVertical_bias="0.105" />
 
     <Button
         android:id="@+id/butToRate"
-        android:layout_width="293dp"
-        android:layout_height="78dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/hp_but_rate"
         android:text="Rate The\nBest Idea"
         android:textColor="#FFFFFF"
@@ -80,23 +77,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.689" />
+        app:layout_constraintTop_toBottomOf="@+id/butToSolution"
+        app:layout_constraintVertical_bias="0.14" />
 
     <Button
         android:id="@+id/butToDevelop"
-        android:layout_width="293dp"
-        android:layout_height="78dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/hp_but_dev"
         android:text="Have Tool\nFor Develop"
         android:textColor="#FFFFFF"
         android:textSize="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintTop_toBottomOf="@+id/butToRate"
+        app:layout_constraintVertical_bias="0.312" />
 
     <TextView
         android:id="@+id/titleHomeScreen"
