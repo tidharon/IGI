@@ -63,6 +63,10 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         if (v == butPhotoSltn) {
             TakePicture();
         }
+        if (v==butRecSltn){
+            Intent intentDiscover = new Intent(this, PopupRecPage.class);
+            startActivity(intentDiscover);
+        }
         if (v == butSubmit) {
             Toast.makeText(getApplicationContext(), "Your Great Idea Added To Data Base!", Toast.LENGTH_SHORT).show();
         }

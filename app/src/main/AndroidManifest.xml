@@ -4,19 +4,22 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/igi_ic_app"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/igi_ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InfoPage"/>
+        <activity android:name=".PopupRecPage"
+            android:theme="@style/AppTheme.PopTheme"
+            />
+        <activity android:name=".InfoPage" />
         <activity android:name=".Problem" />
         <activity android:name=".Solution" />
         <activity android:name=".Rate" />

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import java.io.File;
@@ -51,6 +52,10 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         }
         if (v == butPhotoPrblm){
             TakePicture();
+        }
+        if (v==butRecPrblm){
+            Intent intentDiscover = new Intent(this, PopupRecPage.class);
+            startActivity(intentDiscover);
         }
         if (v==butSubmit){
             Toast.makeText(getApplicationContext(), "Problem Saved!", Toast.LENGTH_SHORT).show();
