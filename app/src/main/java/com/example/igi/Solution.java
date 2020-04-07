@@ -63,7 +63,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         if (v == butPhotoSltn) {
             TakePicture();
         }
-        if (v==butRecSltn){
+        if (v == butRecSltn) {
             Intent intentDiscover = new Intent(this, PopupRecPage.class);
             startActivity(intentDiscover);
         }

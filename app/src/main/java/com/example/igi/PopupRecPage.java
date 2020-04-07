@@ -19,6 +19,7 @@ public class PopupRecPage extends AppCompatActivity {
     Button butStartRec, butPlayRec, butPauseRec;
     MediaRecorder myAudioRecorder;
     String outputFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +32,14 @@ set background size
 
         width = dm.widthPixels;
         height = dm.heightPixels;
-        getWindow().setLayout((int) (width * 0.8), (int) (height * 0.4));
+        getWindow().setLayout((int) (width * 0.9), (int) (height * 0.4));
 
         /*
         recording process
          */
         butStartRec = (Button) findViewById(R.id.startRecBut);
         butPauseRec = (Button) findViewById(R.id.pauseRecBut);
-        butPlayRec = (Button)findViewById(R.id.playRecBut);
+        butPlayRec = (Button) findViewById(R.id.playRecBut);
         butPauseRec.setEnabled(false);
         butPlayRec.setEnabled(false);
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";
@@ -74,7 +75,7 @@ set background size
                 butStartRec.setEnabled(true);
                 butPauseRec.setEnabled(false);
                 butPlayRec.setEnabled(true);
-                Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_SHORT).show();
             }
         });
 

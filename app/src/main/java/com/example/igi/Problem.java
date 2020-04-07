@@ -50,14 +50,14 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
         }
-        if (v == butPhotoPrblm){
+        if (v == butPhotoPrblm) {
             TakePicture();
         }
-        if (v==butRecPrblm){
+        if (v == butRecPrblm) {
             Intent intentDiscover = new Intent(this, PopupRecPage.class);
             startActivity(intentDiscover);
         }
-        if (v==butSubmit){
+        if (v == butSubmit) {
             Toast.makeText(getApplicationContext(), "Problem Saved!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -73,6 +73,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -80,7 +81,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             //img.setImageBitmap(imageBitmap);
 
-            File pictureFileDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/IGI/");
+            File pictureFileDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/IGI/");
             if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
                 return;
             }
@@ -96,9 +97,9 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
                 out.flush();
                 out.close();
-                Log.d(TAG,"image saved in"+filename);
+                Log.d(TAG, "image saved in" + filename);
             } catch (Exception error) {
-                Log.d(TAG,"Image could not be saved");
+                Log.d(TAG, "Image could not be saved");
             }
             Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
 
