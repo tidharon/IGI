@@ -24,16 +24,8 @@ public class PopupRecPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup_rec_page);
-/*
-set background size
- */
-        dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        width = dm.widthPixels;
-        height = dm.heightPixels;
-        getWindow().setLayout((int) (width * 0.9), (int) (height * 0.4));
-
+        setDisplay();
         /*
         recording process
          */
@@ -48,7 +40,22 @@ set background size
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(outputFile);
+        recProcess();
+    }
 
+    /*
+    set background size
+     */
+    protected void setDisplay() {
+        dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        width = dm.widthPixels;
+        height = dm.heightPixels;
+        getWindow().setLayout((int) (width * 0.9), (int) (height * 0.4));
+    }
+
+    protected void recProcess() {
         butStartRec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,4 +101,5 @@ set background size
             }
         });
     }
+
 }

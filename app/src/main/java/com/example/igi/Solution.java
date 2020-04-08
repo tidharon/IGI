@@ -69,6 +69,9 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         }
         if (v == butSubmit) {
             Toast.makeText(getApplicationContext(), "Your Great Idea Added To Data Base!", Toast.LENGTH_SHORT).show();
+            Intent intentLogin = new Intent(this, HomeScreen.class);
+            startActivity(intentLogin);
+            finish();
         }
     }
 

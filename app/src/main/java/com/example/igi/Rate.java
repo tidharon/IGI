@@ -35,6 +35,9 @@ public class Rate extends AppCompatActivity implements View.OnClickListener, Rad
         }
         if (v==butVote){
             Toast.makeText(getApplicationContext(), "Every Vote Affects. Thanks!", Toast.LENGTH_SHORT).show();
+            Intent intentLogin = new Intent(this, HomeScreen.class);
+            startActivity(intentLogin);
+            finish();
         }
     }
 

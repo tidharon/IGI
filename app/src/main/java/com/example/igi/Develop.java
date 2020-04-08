@@ -37,6 +37,9 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
         }
         if (v == butSubmit) {
             Toast.makeText(getApplicationContext(), "Thank You For Helping!", Toast.LENGTH_SHORT).show();
+            Intent intentLogin = new Intent(this, HomeScreen.class);
+            startActivity(intentLogin);
+            finish();
         }
 
     }

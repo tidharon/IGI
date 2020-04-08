@@ -17,7 +17,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     Button butToDevelop;
     ImageView butInfo;
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

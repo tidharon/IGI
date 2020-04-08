@@ -10,31 +10,30 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class signup extends AppCompatActivity implements OnClickListener{
+public class signup extends AppCompatActivity implements OnClickListener {
     Button butSignUp;
-ImageView butInfo;
-    @SuppressLint("WrongViewCast")
+    ImageView butInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        butSignUp = (Button)findViewById(R.id.ButSingUp);
+        butSignUp = (Button) findViewById(R.id.ButSingUp);
         butSignUp.setOnClickListener(this);
         butInfo = (ImageView) findViewById(R.id.info_but);
         butInfo.setOnClickListener(this);
     }
 
-    public void onClick(View v){
-        if (v==butSignUp)
-        {
+    public void onClick(View v) {
+        if (v == butSignUp) {
             Intent intentHomeScreen = new Intent(this, HomeScreen.class);
             startActivity(intentHomeScreen);
             finish();
         }
-        if (v==butInfo) {
+        if (v == butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
         }
-     }
+    }
 }

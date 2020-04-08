@@ -59,6 +59,9 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         }
         if (v == butSubmit) {
             Toast.makeText(getApplicationContext(), "Problem Saved!", Toast.LENGTH_SHORT).show();
+            Intent intentLogin = new Intent(this, HomeScreen.class);
+            startActivity(intentLogin);
+            finish();
         }
     }
 
