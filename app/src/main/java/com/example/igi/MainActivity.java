@@ -7,10 +7,15 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -22,7 +27,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button butToSignUp;
     Button butInfo;
     String Tag = "IGI";
-
+    EditText editUsename, editPassword;
+    ProgressBar PBLogin;
+    FirebaseAuth fAuth;
+    String name, password;
 
     /**
      * This function requests premissions
@@ -90,12 +98,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         butLogin.setOnClickListener(this);
         butToSignUp.setOnClickListener(this);
         butInfo.setOnClickListener(this);
+        PBLogin = findViewById(R.id.Login_progressBar);
+        fAuth = FirebaseAuth.getInstance();
+
+        if (fAuth.getCurrentUser() != null) {
+            startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+        }
 
     }
 
     @Override
     public void onClick(View v) {
         if (v == butLogin) {
+
+            PBLogin.setVisibility(View.VISIBLE);
+
+            name = editUsename.getText().toString().trim();
+            password = editPassword.getText().toString().trim();
+
+            if (TextUtils.isEmpty(name)) {
+                editUsename.setError("Please enter Your Username");
+            }
+            if (TextUtils.isEmpty(password)) {
+                editPassword.setError("please enter password");
+            }
+
             Intent intentLogin = new Intent(this, HomeScreen.class);
             startActivity(intentLogin);
             finish();
