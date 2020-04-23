@@ -56,7 +56,7 @@ public class signup extends AppCompatActivity implements OnClickListener {
         fAuth = FirebaseAuth.getInstance();
         fsInfo = FirebaseFirestore.getInstance();
 
-        if(fAuth.getCurrentUser()!= null){
+        if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), HomeScreen.class));
         }
     }
@@ -79,6 +79,7 @@ public class signup extends AppCompatActivity implements OnClickListener {
                 editPassword.setError("please enter password");
             }
 
+
             fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -92,7 +93,7 @@ public class signup extends AppCompatActivity implements OnClickListener {
                         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Log.d("TAG", "User Profile Created For "+uID);
+                                Log.d("TAG", "User Profile Created For " + uID);
                             }
                         });
 
