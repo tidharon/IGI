@@ -1,5 +1,6 @@
 package com.example.igi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,6 +16,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -27,13 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button butToSignUp;
     Button butInfo;
     String Tag = "IGI";
-    EditText editUsename, editPassword;
+    EditText editUsername, editPassword;
     ProgressBar PBLogin;
     FirebaseAuth fAuth;
-    String name, password;
+    String email, password;
 
     /**
-     * This function requests premissions
+     * This function requests permissions
      */
     private void requestPermission() {
         ActivityCompat.requestPermissions(MainActivity.this, new
@@ -98,8 +102,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         butLogin.setOnClickListener(this);
         butToSignUp.setOnClickListener(this);
         butInfo.setOnClickListener(this);
+        editUsername = findViewById(R.id.LoginUsername);
+        editPassword = findViewById(R.id.LoginPassword);
         PBLogin = findViewById(R.id.Login_progressBar);
         fAuth = FirebaseAuth.getInstance();
+
 
         if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), HomeScreen.class));
@@ -113,19 +120,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             PBLogin.setVisibility(View.VISIBLE);
 
-            name = editUsename.getText().toString().trim();
+            email = editUsername.getText().toString().trim();
             password = editPassword.getText().toString().trim();
 
-            if (TextUtils.isEmpty(name)) {
-                editUsename.setError("Please enter Your Username");
+            if (TextUtils.isEmpty(email)) {
+                editUsername.setError("Please enter Your Email");
             }
             if (TextUtils.isEmpty(password)) {
                 editPassword.setError("please enter password");
             }
 
-            Intent intentLogin = new Intent(this, HomeScreen.class);
-            startActivity(intentLogin);
-            finish();
+            fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(MainActivity.this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+                        finish();
+                    }else{
+                        Toast.makeText(MainActivity.this, "ERROR! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        PBLogin.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
         }
         if (v == butToSignUp) {
             Intent intentLogin = new Intent(this, signup.class);

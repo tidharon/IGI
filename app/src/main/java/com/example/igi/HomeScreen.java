@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeScreen extends AppCompatActivity implements View.OnClickListener {
     Button butToDiscover;
@@ -16,6 +19,8 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     Button butToRate;
     Button butToDevelop;
     ImageView butInfo;
+    ImageView butLogout;
+    ProgressBar PBLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,9 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         butToRate.setOnClickListener(this);
         butToDevelop = (Button) findViewById(R.id.butToDevelop);
         butToDevelop.setOnClickListener(this);
+        butLogout = (ImageView)findViewById(R.id.logout_ic);
+        butLogout.setOnClickListener(this);
+        PBLogout = findViewById(R.id.logout_progressBar);
     }
 
     @Override
@@ -55,6 +63,12 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         if (v == butInfo) {
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
+        }
+        if(v==butLogout){
+            PBLogout.setVisibility(View.VISIBLE);
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
         }
     }
     /*
