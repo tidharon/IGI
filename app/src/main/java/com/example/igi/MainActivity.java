@@ -27,14 +27,14 @@ import static android.Manifest.permission.CAMERA;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button butLogin;
-    Button butToSignUp;
-    Button butInfo;
-    String Tag = "IGI";
-    EditText editUsername, editPassword;
-    ProgressBar PBLogin;
-    FirebaseAuth fAuth;
-    String email, password;
+    private Button butLogin;
+    private Button butToSignUp;
+    private Button butInfo;
+    private String Tag = "IGI";
+    private EditText editUsername, editPassword;
+    private ProgressBar PBLogin;
+    private FirebaseAuth fAuth;
+    private String email, password;
 
     /**
      * This function requests permissions
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+            finish();
         }
 
     }

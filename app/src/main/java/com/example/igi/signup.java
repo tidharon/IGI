@@ -29,15 +29,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class signup extends AppCompatActivity implements OnClickListener {
-    Button butSignUp;
-    ImageView butInfo;
-    EditText editEmail, editName, editPassword;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fsInfo;
-    ProgressBar PBSignup;
-    String email, name, password, uID;
-    DocumentReference documentReference;
-    Map<String, Object> user;
+    private Button butSignUp;
+    private ImageView butInfo;
+    private EditText editEmail, editName, editPassword;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fsInfo;
+    private ProgressBar PBSignup;
+    private String email, name, password, uID;
+    private DocumentReference documentReference;
+    private Map<String, Object> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class signup extends AppCompatActivity implements OnClickListener {
 
         if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), HomeScreen.class));
+            finish();
         }
     }
 
