@@ -8,26 +8,54 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.System.out;
 
 public class Problem extends AppCompatActivity implements View.OnClickListener {
-    Button butPhotoPrblm;
-    Button butRecPrblm;
-    ImageView butInfo;
-    Button butSubmit;
-    String TAG = "igi";
+    private Button butPhotoPrblm;
+    private Button butRecPrblm;
+    private ImageView butInfo;
+    private Button butSubmit;
+    private EditText editTitle, editDesc;
+    private String TAG = "igi";
+    private int requestCode;
+    private int resultCode;
+    private Intent data;
+    private String txtTitle, txtDes, uID, imgPath;
+    private FirebaseDatabase prblmDB;
+    private DatabaseReference prblmRef;
+    private Map<String, Object> prblm;
+    private FirebaseAuth fAuth;
+    private ProgressBar PBP;
+    private FirebaseStorage storage;
+    private StorageReference imgRef;
+    private StorageMetadata metadata;
+    private UploadTask upTask;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +70,11 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         butInfo.setOnClickListener(this);
         butSubmit = (Button) findViewById(R.id.submit_but);
         butSubmit.setOnClickListener(this);
+        editTitle = findViewById(R.id.frmPrblmTitle);
+        editDesc = findViewById(R.id.frmPrblmDes);
+        prblmDB = FirebaseDatabase.getInstance();
+        PBP = findViewById(R.id.PBPrblm);
+        storage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -58,10 +91,30 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             startActivity(intentDiscover);
         }
         if (v == butSubmit) {
+            PBP.setVisibility(View.VISIBLE);
+
+            txtTitle = editTitle.getText().toString();
+            txtDes = editDesc.getText().toString();
+            uID = fAuth.getCurrentUser().getUid();
+
+            if (TextUtils.isEmpty(txtTitle)) {
+                editTitle.setError("Problem Title Needed");
+            }
+            if (TextUtils.isEmpty(txtDes)) {
+                editDesc.setError("Problem Description Needed");
+            }
+
+            prblmRef = prblmDB.getReference("Problems Text").child(uID + txtTitle);
+            prblm = new HashMap<>();
+            prblm.put("Prblm Title: ", txtTitle);
+            prblm.put("Prblm Description:", txtDes);
+            prblmRef.setValue(prblm);
+
             Toast.makeText(getApplicationContext(), "Problem Saved!", Toast.LENGTH_SHORT).show();
             Intent intentLogin = new Intent(this, HomeScreen.class);
             startActivity(intentLogin);
             finish();
+            PBP.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -79,31 +132,27 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        this.requestCode = requestCode;
+        this.resultCode = resultCode;
+        this.data = data;
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             //img.setImageBitmap(imageBitmap);
 
-            File pictureFileDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/IGI/");
-            if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
-                return;
-            }
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
             String date = dateFormat.format(new Date());
-            String photoFile = "prblmImage" + "_" + date + ".jpg";
-            String filename = pictureFileDir.getPath() + File.separator + photoFile;
-            File mainPicture = new File(filename);
-            //addImageFile(mainPicture);
-
-            try {
-                FileOutputStream fos = new FileOutputStream(mainPicture);
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                out.flush();
-                out.close();
-                Log.d(TAG, "image saved in" + filename);
-            } catch (Exception error) {
-                Log.d(TAG, "Image could not be saved");
+            txtTitle = editTitle.getText().toString();
+            if (TextUtils.isEmpty(txtTitle)) {
+                editTitle.setError("Problem Title Needed");
             }
+            String photoFile = "prblmImage" + "_" + txtTitle + "_" + date + ".jpg";
+            byte[] daata = c
+            //addImageFile(mainPicture);
+            imgRef = storage.getReference("Problems Pictures").child(txtTitle +"_"+ uID);
+            metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
+            upTask = imgRef.putBytes(data, metadata);
             Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
 
         }

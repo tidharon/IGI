@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "359328384016",
+    "firebase_url": "https://igi-app-39812.firebaseio.com",
+    "project_id": "igi-app-39812",
+    "storage_bucket": "igi-app-39812.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359328384016:android:d7f02db3defb176bd63695",
+        "android_client_info": {
+          "package_name": "com.example.igi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359328384016-js0263d2m6kledh0luuqhon3grnhh0ki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.igi",
+            "certificate_hash": "4c81879a29f3d10b81015cf9366c30a217ba1afe"
+          }
+        },
+        {
+          "client_id": "359328384016-b5ej7718bpado2aopal1dg14eq1ov35h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiQ0sYtgXTtUPtUqlh0wTx1tq4M0ivvP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359328384016-b5ej7718bpado2aopal1dg14eq1ov35h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
