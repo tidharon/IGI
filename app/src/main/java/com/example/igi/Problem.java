@@ -26,6 +26,7 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -124,10 +125,16 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private void TakePicture() {
+        PBP.setVisibility(View.VISIBLE);
+        txtTitle = editTitle.getText().toString();
+        if (TextUtils.isEmpty(txtTitle)) {
+            editTitle.setError("Problem Title Needed");
+        }
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+        PBP.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -140,19 +147,15 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             //img.setImageBitmap(imageBitmap);
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
             String date = dateFormat.format(new Date());
-            txtTitle = editTitle.getText().toString();
-            if (TextUtils.isEmpty(txtTitle)) {
-                editTitle.setError("Problem Title Needed");
-            }
             String photoFile = "prblmImage" + "_" + txtTitle + "_" + date + ".jpg";
-            byte[] daata = c
+            ByteArrayOutputStream boas = new ByteArrayOutputStream();
+            byte[] daata = boas.toByteArray();
             //addImageFile(mainPicture);
             imgRef = storage.getReference("Problems Pictures").child(txtTitle +"_"+ uID);
             metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
-            upTask = imgRef.putBytes(data, metadata);
+            upTask = imgRef.putBytes(daata, metadata);
             Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
 
         }
