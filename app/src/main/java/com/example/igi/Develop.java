@@ -79,7 +79,7 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
             documentReference.set(develop).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Log.d(TAG , "Developer info saved." + develop);
+             ///       Log.d(TAG , "Developer info saved." + develop);
                 }
             })
 
