@@ -25,7 +25,7 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     String titleText, desText, allText;
     int num = 0;
 
-
+//git add
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
