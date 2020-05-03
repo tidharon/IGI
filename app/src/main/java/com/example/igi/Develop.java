@@ -35,8 +35,9 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     private FirebaseFirestore fstore;
     private String IdDetails;
     private DocumentReference documentReference;
+    private String TAG = "igi";
 
-//git add
+    //git add
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,14 +75,14 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
             IdDetails = fAuth.getCurrentUser().getUid();
             documentReference = fstore.collection("Developers").document(TxtTitle + " " + TxtDes);
             final Map<String, String> develop = new HashMap<>();
-            develop.put("Develop Title " , TxtTitle);
-            develop.put("Develop Description " , TxtDes);
+            develop.put("Develop Title ", TxtTitle);
+            develop.put("Develop Description ", TxtDes);
             documentReference.set(develop).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-             ///       Log.d(TAG , "Developer info saved." + develop);
+                    Log.d(TAG, "Developer info saved." + develop);
                 }
-            }
+            });
 
             Toast.makeText(getApplicationContext(), "Thank You For Helping!", Toast.LENGTH_SHORT).show();
             Intent intentLogin = new Intent(this, HomeScreen.class);
@@ -92,5 +93,5 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    }
 }
+
