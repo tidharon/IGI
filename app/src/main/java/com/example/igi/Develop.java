@@ -81,7 +81,7 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
                 public void onSuccess(Void aVoid) {
                     Log.d(TAG , "Developer info saved." + develop);
                 }
-            })
+            }
 
             Toast.makeText(getApplicationContext(), "Thank You For Helping!", Toast.LENGTH_SHORT).show();
             Intent intentLogin = new Intent(this, HomeScreen.class);
