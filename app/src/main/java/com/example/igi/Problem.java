@@ -136,6 +136,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         }
         PBP.setVisibility(View.INVISIBLE);
     }
+    public void func(){}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
