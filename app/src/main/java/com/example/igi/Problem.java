@@ -46,7 +46,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     private int requestCode;
     private int resultCode;
     private Intent data;
-    private String txtTitle, txtDes, uID, imgPath;
+    String txtTitle, txtDes, uID, imgPath;
     private FirebaseDatabase prblmDB;
     private DatabaseReference prblmRef;
     private Map<String, Object> prblm;
@@ -88,7 +88,11 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             TakePicture();
         }
         if (v == butRecPrblm) {
-            Intent intentDiscover = new Intent(this, PopupRecPage.class);
+            txtTitle = editTitle.getText().toString();
+            if (TextUtils.isEmpty(txtTitle)) {
+                editTitle.setError("Problem Title Needed");
+            }
+            Intent intentDiscover = new Intent(this, PopupRecPage.class).putExtra("from", txtTitle);
             startActivity(intentDiscover);
         }
         if (v == butSubmit) {
@@ -100,6 +104,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
 
             if (TextUtils.isEmpty(txtTitle)) {
                 editTitle.setError("Problem Title Needed");
+
             }
             if (TextUtils.isEmpty(txtDes)) {
                 editDesc.setError("Problem Description Needed");
@@ -136,7 +141,6 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         }
         PBP.setVisibility(View.INVISIBLE);
     }
-    public void func(){}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

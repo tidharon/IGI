@@ -11,14 +11,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class PopupRecPage extends AppCompatActivity {
-    DisplayMetrics dm;
-    int width, height;
-    Button butStartRec, butPlayRec, butPauseRec;
-    MediaRecorder myAudioRecorder;
-    String outputFile;
+    private DisplayMetrics dm;
+    private int width, height;
+    private Button butStartRec, butPlayRec, butPauseRec;
+    private MediaRecorder myAudioRecorder;
+    private String outputFile, lastAct, lastTitle;
+    private FirebaseStorage storage;
+    private StorageReference imgRef;
+    private StorageMetadata metadata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +37,15 @@ public class PopupRecPage extends AppCompatActivity {
         /*
         recording process
          */
+        lastAct = getIntent().getAction();
+        lastTitle = getIntent().getStringExtra("from");
         butStartRec = (Button) findViewById(R.id.startRecBut);
         butPauseRec = (Button) findViewById(R.id.pauseRecBut);
         butPlayRec = (Button) findViewById(R.id.playRecBut);
         butPauseRec.setEnabled(false);
         butPlayRec.setEnabled(false);
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() +("/recording"+lastAct+lastTitle+dateFormat+".3gp");
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -76,9 +87,13 @@ public class PopupRecPage extends AppCompatActivity {
         butPauseRec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myAudioRecorder.stop();
-                myAudioRecorder.release();
-                myAudioRecorder = null;
+                try {
+                    myAudioRecorder.stop();
+                    myAudioRecorder.release();
+                    myAudioRecorder = null;
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
                 butStartRec.setEnabled(true);
                 butPauseRec.setEnabled(false);
                 butPlayRec.setEnabled(true);
