@@ -11,6 +11,7 @@
     <string name="back_prblm">back_prblm</string>
     <string name="add_nphoto">Add Photo</string>
     <string name="info_text">IGI\'s Idea  IGI established to give the world an easy and simple way to bring out solutions to daily problems that everyone is dealing with.  Why We Are Here?  Today, the way entrepreneurs need to go through to get to the market and start spreading his idea to the world, as a product, an app or any other way, is so complicated that about 99% of the startups are falling!  The Main Problem  After we did research, we realized that the reason people stop developing their great idea is mostly short resources - yes, Google isn\'t enough.  The Solution - IGI  IGI is here to simplify and improve the process, start with finding a problem, through suggest solutions and developing prototype, to raising money and start selling it. All based on the power of our global internet village.  Our Logo  The iconic cow-rocket designed to remind everyone that IGI\'s target is that even a low-cognition animal like a cow - can become the next huge startup.</string>
+    <string name="pick_image_intent_text" />
     <string-array name="problemList">
         <item>Bus Sleep</item>
         <item>Sugar Serve</item>

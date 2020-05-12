@@ -52,7 +52,6 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
 
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +87,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             TakePicture();
         }
         if (v == butRecSltn) {
+
             Intent intentDiscover = new Intent(this, PopupRecPage.class).putExtra("from", "solution");
             startActivity(intentDiscover);
         }

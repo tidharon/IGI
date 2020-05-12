@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -17,9 +17,10 @@
         android:roundIcon="@mipmap/igi_ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PopupRecPage"
-            android:theme="@style/AppTheme.PopTheme"
-            />
+        <activity android:name=".ImagePicker"></activity>
+        <activity
+            android:name=".PopupRecPage"
+            android:theme="@style/AppTheme.PopTheme" />
         <activity android:name=".InfoPage" />
         <activity android:name=".Problem" />
         <activity android:name=".Solution" />

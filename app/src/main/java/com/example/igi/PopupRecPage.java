@@ -25,7 +25,7 @@ public class PopupRecPage extends AppCompatActivity {
     private MediaRecorder myAudioRecorder;
     private String outputFile, lastAct, lastTitle;
     private FirebaseStorage storage;
-    private StorageReference imgRef;
+    private StorageReference recRef;
     private StorageMetadata metadata;
 
     @Override
