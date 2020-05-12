@@ -91,9 +91,6 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
             PBP.setVisibility(View.INVISIBLE);
-
-
-
         }
         if (v == butRecPrblm) {
             txtTitle = editTitle.getText().toString();

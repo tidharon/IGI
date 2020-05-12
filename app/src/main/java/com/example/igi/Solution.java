@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -48,8 +49,9 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
     private StorageReference imgRef;
     private StorageMetadata metadata;
     private UploadTask upTask;
-
-
+    private ProgressBar SPB;
+    private ByteArrayOutputStream baos;
+    private static final int PICK_IMAGE_ID = 666; // the number doesn't matter
 
 
     @Override
@@ -84,7 +86,15 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             startActivity(intentDiscover);
         }
         if (v == butPhotoSltn) {
-            TakePicture();
+            SPB.setVisibility(View.VISIBLE);
+            txtTitle = editTitle.getText().toString();
+            if (TextUtils.isEmpty(txtTitle)) {
+                editTitle.setError("Solution Title Needed");
+                SPB.setVisibility(View.INVISIBLE);
+            }
+            Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
+            startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+            SPB.setVisibility(View.INVISIBLE);
         }
         if (v == butRecSltn) {
 
@@ -99,41 +109,28 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    private void TakePicture() {
-        txtTitle = editTitle.getText().toString();
-        if (TextUtils.isEmpty(txtTitle)) {
-            editTitle.setError("Solution Title Needed");
-        }
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-        Toast.makeText(getApplicationContext(), "Image Saved Successfully!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        this.requestCode = requestCode;
-        this.resultCode = resultCode;
-        this.data = data;
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //img.setImageBitmap(imageBitmap);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
-            String date = dateFormat.format(new Date());
-            String photoFile = "sltnImage" + "_" + txtTitle + "_" + date + ".jpg";
-            ByteArrayOutputStream boas = new ByteArrayOutputStream();
-            byte[] daata = boas.toByteArray();
-            //addImageFile(mainPicture);
-            imgRef = storage.getReference("Solutions Pictures").child(txtTitle + "_" + uID);
-            metadata = new StorageMetadata.Builder().setCustomMetadata("solution: ", photoFile).build();
-            upTask = imgRef.putBytes(daata, metadata);
-            Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
+        switch (requestCode) {
+            case PICK_IMAGE_ID:
+                Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+                baos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+                String date = dateFormat.format(new Date());
+                String photoFile = "sltnImage" + "_" + txtTitle + "_" + date + ".jpg";
+                byte[] daata = baos.toByteArray();
 
+                imgRef = storage.getReference("Solutions pictures").child(txtTitle + "_" + uID);
+                metadata = new StorageMetadata.Builder().setCustomMetadata("sltn: ", photoFile).build();
+                upTask = imgRef.putBytes(daata, metadata);
+
+
+                Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
         }
     }
+
 }
+
