@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleHomeScreen"
-        app:layout_constraintVertical_bias="0.096" />
+        app:layout_constraintVertical_bias="0.105" />
 
     <Button
         android:id="@+id/butToSolution"
@@ -67,20 +67,6 @@
         app:layout_constraintVertical_bias="0.105" />
 
     <Button
-        android:id="@+id/butToRate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/hp_but_rate"
-        android:text="Rate The\nBest Idea"
-        android:textColor="#FFFFFF"
-        android:textSize="23dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/butToSolution"
-        app:layout_constraintVertical_bias="0.14" />
-
-    <Button
         android:id="@+id/butToDevelop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,8 +77,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/butToRate"
-        app:layout_constraintVertical_bias="0.312" />
+        app:layout_constraintTop_toBottomOf="@+id/butToSolution"
+        app:layout_constraintVertical_bias="0.105" />
+
 
     <TextView
         android:id="@+id/titleHomeScreen"

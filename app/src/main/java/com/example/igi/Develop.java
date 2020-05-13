@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,13 +31,17 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     private ImageView butInfo;
     private EditText frmTitle, frmDes;
     private FileOutputStream devFile;
-    private String titleText, desText, allText;
+    private String txtTitle, txtDes, userMail;
     private int num = 0;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fstore;
-    private String IdDetails;
-    private DocumentReference documentReference;
+    private String uID;
+    private DatabaseReference devlpRef;
     private String TAG = "igi";
+    private FirebaseDatabase devlpDB;
+    private Map<String, Object> devlp;
+
+
 
     //git add
     @Override
@@ -51,7 +57,8 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
         frmTitle.setOnClickListener(this);
         frmDes.setOnClickListener(this);
         num++;
-
+        fAuth = FirebaseAuth.getInstance();
+        devlpDB = FirebaseDatabase.getInstance();
     }
 
     @Override
@@ -62,27 +69,25 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
             startActivity(intentDiscover);
         }
         if (v == butSubmit) {
-            String TxtTitle = frmTitle.getText().toString();
-            String TxtDes = frmDes.getText().toString();
+            txtTitle = frmTitle.getText().toString();
+            txtDes = frmDes.getText().toString();
+            uID = fAuth.getCurrentUser().getUid();
+            userMail = fAuth.getCurrentUser().getEmail();
 
-            if (TextUtils.isEmpty(TxtTitle)) {
-                frmTitle.setError("Please Enter Title");
+            if (TextUtils.isEmpty(txtTitle)) {
+                frmTitle.setError("Skill Title Needed");
+
             }
-            if (TextUtils.isEmpty(TxtDes)) {
-                frmDes.setError("Please enter Your Description");
+            if (TextUtils.isEmpty(txtDes)) {
+                frmDes.setError("Skill Description Needed");
             }
 
-            IdDetails = fAuth.getCurrentUser().getUid();
-            documentReference = fstore.collection("Developers").document(TxtTitle + " " + TxtDes);
-            final Map<String, String> develop = new HashMap<>();
-            develop.put("Develop Title ", TxtTitle);
-            develop.put("Develop Description ", TxtDes);
-            documentReference.set(develop).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "Developer info saved." + develop);
-                }
-            });
+            devlpRef = devlpDB.getReference("Developers Text").child(uID +" | "+ txtTitle);
+            devlp = new HashMap<>();
+            devlp.put("Dvlp Title: ", txtTitle);
+            devlp.put("Dvlp Mail: ", userMail);
+            devlp.put("Dvlp Description:", txtDes);
+            devlpRef.setValue(devlp);
 
             Toast.makeText(getApplicationContext(), "Thank You For Helping!", Toast.LENGTH_SHORT).show();
             Intent intentLogin = new Intent(this, HomeScreen.class);

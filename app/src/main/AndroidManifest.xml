@@ -24,7 +24,6 @@
         <activity android:name=".InfoPage" />
         <activity android:name=".Problem" />
         <activity android:name=".Solution" />
-        <activity android:name=".Rate" />
         <activity android:name=".Develop" />
         <activity android:name=".HomeScreen" />
         <activity android:name=".signup" />

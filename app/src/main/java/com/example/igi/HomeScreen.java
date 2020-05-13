@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class HomeScreen extends AppCompatActivity implements View.OnClickListener {
     Button butToDiscover;
     Button butToSolution;
-    Button butToRate;
     Button butToDevelop;
     ImageView butInfo;
     ImageView butLogout;
@@ -32,8 +31,6 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         butToDiscover.setOnClickListener(this);
         butToSolution = (Button) findViewById(R.id.butToSolution);
         butToSolution.setOnClickListener(this);
-        butToRate = (Button) findViewById(R.id.butToRate);
-        butToRate.setOnClickListener(this);
         butToDevelop = (Button) findViewById(R.id.butToDevelop);
         butToDevelop.setOnClickListener(this);
         butLogout = (ImageView)findViewById(R.id.logout_ic);
@@ -52,10 +49,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             Intent intentSolution = new Intent(this, Solution.class);
             startActivity(intentSolution);
         }
-        if (v == butToRate) {
-            Intent intentRate = new Intent(this, Rate.class);
-            startActivity(intentRate);
-        }
+
         if (v == butToDevelop) {
             Intent intentDevelop = new Intent(this, Develop.class);
             startActivity(intentDevelop);
