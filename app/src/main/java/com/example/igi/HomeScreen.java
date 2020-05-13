@@ -1,8 +1,5 @@
 package com.example.igi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +8,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeScreen extends AppCompatActivity implements View.OnClickListener {
+    /*
+    Double back press to exit app
+     */
+    private static long back_pressed;
     Button butToDiscover;
     Button butToSolution;
     Button butToDevelop;
@@ -33,7 +36,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         butToSolution.setOnClickListener(this);
         butToDevelop = (Button) findViewById(R.id.butToDevelop);
         butToDevelop.setOnClickListener(this);
-        butLogout = (ImageView)findViewById(R.id.logout_ic);
+        butLogout = (ImageView) findViewById(R.id.logout_ic);
         butLogout.setOnClickListener(this);
         PBLogout = findViewById(R.id.logout_progressBar);
     }
@@ -58,17 +61,13 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
         }
-        if(v==butLogout){
+        if (v == butLogout) {
             PBLogout.setVisibility(View.VISIBLE);
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
     }
-    /*
-    Double back press to exit app
-     */
-    private static long back_pressed;
 
     @Override
     public void onBackPressed() {

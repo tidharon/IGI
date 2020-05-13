@@ -1,10 +1,8 @@
 package com.example.igi;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,18 +11,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.igi.R.*;
+import static com.example.igi.R.id;
+import static com.example.igi.R.layout;
 
 public class Develop extends AppCompatActivity implements View.OnClickListener {
     private Button butSubmit;
@@ -40,7 +37,6 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "igi";
     private FirebaseDatabase devlpDB;
     private Map<String, Object> devlp;
-
 
 
     //git add
@@ -82,7 +78,7 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
                 frmDes.setError("Skill Description Needed");
             }
 
-            devlpRef = devlpDB.getReference("Developers Text").child(uID +" | "+ txtTitle);
+            devlpRef = devlpDB.getReference("Developers Text").child(uID + " | " + txtTitle);
             devlp = new HashMap<>();
             devlp.put("Dvlp Title: ", txtTitle);
             devlp.put("Dvlp Mail: ", userMail);

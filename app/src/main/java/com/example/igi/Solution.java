@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Solution extends AppCompatActivity implements View.OnClickListener {
+    private static final int PICK_IMAGE_ID = 666; // the number doesn't matter
     private Button butPhotoSltn;
     private Button butRecSltn;
     private ImageView butInfo;
@@ -59,8 +60,6 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
     private DatabaseReference prblmRef, sltnRef;
     private Map<String, Object> sltn;
     private ValueEventListener eventListener;
-    private static final int PICK_IMAGE_ID = 666; // the number doesn't matter
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,9 +115,11 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                 SPB.setVisibility(View.INVISIBLE);
                 return;
             }
-            sltnRef = prblmDB.getReference("Problems Text").child(uID +" | "+ txtTitle);
+            sltnRef = prblmDB.getReference("Problems Text").child(uID + " | " + txtTitle);
             sltnID = sltnRef.getKey();
             Intent intentDiscover = new Intent(this, PopupRecPage.class).putExtra("from", sltnID);
+            intentDiscover.putExtra("title", txtTitle);
+            intentDiscover.putExtra("sl/pr", "Solution");
             startActivity(intentDiscover);
             recURL = getIntent().getStringExtra("recURL");
         }
@@ -132,13 +133,14 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     problemArray.add(ds.getKey());
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         };
         prblmRef.addListenerForSingleValueEvent(eventListener);
         return problemArray;

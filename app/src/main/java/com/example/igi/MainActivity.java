@@ -1,10 +1,5 @@
 package com.example.igi;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,17 +11,27 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.Manifest.permission.CAMERA;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final int RequestPermissionCode = 1;
+    /*
+    Double back press to exit app
+     */
+    private static long back_pressed;
     private Button butLogin;
     private Button butToSignUp;
     private Button butInfo;
@@ -44,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO, CAMERA}, RequestPermissionCode);
     }
-
-    public static final int RequestPermissionCode = 1;
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -83,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 result2 == PackageManager.PERMISSION_GRANTED &&
                 result3 == PackageManager.PERMISSION_GRANTED;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,11 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         Toast.makeText(MainActivity.this, "Welcome Back!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), HomeScreen.class));
                         finish();
-                    }else{
+                    } else {
                         Toast.makeText(MainActivity.this, "ERROR! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         PBLogin.setVisibility(View.INVISIBLE);
                     }
@@ -154,11 +156,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intentDiscover);
         }
     }
-
-    /*
-    Double back press to exit app
-     */
-    private static long back_pressed;
 
     @Override
     public void onBackPressed() {
