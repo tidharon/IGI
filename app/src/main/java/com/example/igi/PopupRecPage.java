@@ -1,18 +1,21 @@
 package com.example.igi;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -21,18 +24,21 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PopupRecPage extends AppCompatActivity {
-    private DisplayMetrics dm;
-    private int width, height;
     private Button butStartRec, butPlayRec, butPauseRec;
     private MediaRecorder myAudioRecorder;
-    private String outputFile, lastAct, lastID, recURL, lastTitle;
-    private FirebaseStorage storage;
+    private String outputFile;
+    private String lastID;
+    private String recURL;
     private StorageReference recRef;
     private StorageMetadata metadata;
     private UploadTask uploadTask;
     private ProgressBar PBR;
+    private FirebaseStorage storage;
+    private String lastAct;
+    private String lastTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +60,14 @@ public class PopupRecPage extends AppCompatActivity {
         butPauseRec.setEnabled(false);
         butPlayRec.setEnabled(false);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+        String date = dateFormat.format(new Date());
         storage = FirebaseStorage.getInstance();
-        recRef = storage.getReference(lastAct + " Records").child(lastTitle);
-        outputFile = (lastAct + " | " + lastID + " | " + dateFormat.toString() + ".3gp");
+        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + ("/" + lastAct + " | " + lastID + " | " + date + ".3gp");
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(outputFile);
-
 
         recProcess();
     }
@@ -71,11 +76,11 @@ public class PopupRecPage extends AppCompatActivity {
     set background size
      */
     protected void setDisplay() {
-        dm = new DisplayMetrics();
+        DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        width = dm.widthPixels;
-        height = dm.heightPixels;
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
         getWindow().setLayout((int) (width * 0.9), (int) (height * 0.4));
     }
 
@@ -86,14 +91,15 @@ public class PopupRecPage extends AppCompatActivity {
                 try {
                     myAudioRecorder.prepare();
                     myAudioRecorder.start();
+                    Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+
                 } catch (IllegalStateException ise) {
                     // make something ...
                 } catch (IOException ioe) {
-                    // make something
+                    Log.println(Log.ERROR, "TAG", "Not Prepare");
                 }
                 butStartRec.setEnabled(false);
                 butPauseRec.setEnabled(true);
-                Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -106,13 +112,19 @@ public class PopupRecPage extends AppCompatActivity {
                     myAudioRecorder.release();
                     myAudioRecorder = null;
 
+                    recRef = storage.getReference(lastAct + " Records").child(lastTitle);
                     metadata = new StorageMetadata.Builder().setCustomMetadata(lastID, outputFile).build();
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     byte[] daata = baos.toByteArray();
-                    uploadTask = recRef.putBytes(daata, metadata);
-                    recURL = recRef.getDownloadUrl().toString();
+                    uploadTask = (UploadTask) recRef.putBytes(daata, metadata).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            PBR.setVisibility(View.INVISIBLE);
+
+                        }
+                    });
+                    recURL = recRef.toString();
                     getIntent().putExtra("recURL", recURL);
-                    PBR.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), "Audio Recorded successfully", Toast.LENGTH_SHORT).show();
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
@@ -130,7 +142,7 @@ public class PopupRecPage extends AppCompatActivity {
             public void onClick(View v) {
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(recURL);
+                    mediaPlayer.setDataSource(outputFile);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
                     Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();

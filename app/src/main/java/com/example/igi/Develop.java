@@ -32,14 +32,13 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     private int num = 0;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fstore;
-    private String uID;
+    private String uID, userName;
     private DatabaseReference devlpRef;
     private String TAG = "igi";
     private FirebaseDatabase devlpDB;
     private Map<String, Object> devlp;
 
 
-    //git add
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +69,7 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
             uID = fAuth.getCurrentUser().getUid();
             userMail = fAuth.getCurrentUser().getEmail();
 
+
             if (TextUtils.isEmpty(txtTitle)) {
                 frmTitle.setError("Skill Title Needed");
 
@@ -78,10 +78,11 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
                 frmDes.setError("Skill Description Needed");
             }
 
-            devlpRef = devlpDB.getReference("Developers Text").child(uID + " | " + txtTitle);
+            devlpRef = devlpDB.getReference("Developers").child(uID +" | "+txtTitle);
             devlp = new HashMap<>();
             devlp.put("Dvlp Title: ", txtTitle);
             devlp.put("Dvlp Mail: ", userMail);
+            devlp.put("Dvlp ID: ", uID);
             devlp.put("Dvlp Description:", txtDes);
             devlpRef.setValue(devlp);
 

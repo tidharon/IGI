@@ -17,6 +17,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.igi.R;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import java.util.List;
 public class ImagePicker extends AppCompatActivity {
 
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
-    private static final String TAG = "ImagePicker";
+    private static final String TAG = "com.example.igi.ImagePicker";
     private static final String TEMP_IMAGE_NAME = "tempImage";
 
     public static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;

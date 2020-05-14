@@ -23,7 +23,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,18 +39,14 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     private int requestCode;
     private int resultCode;
     private Intent data;
-    private String txtTitle, txtDes, uID, imageURL, recURL;
+    private String txtTitle;
+    private String uID;
+    private String imageURL;
+    private String recURL;
     private FirebaseDatabase prblmDB;
-    private DatabaseReference prblmRef, prblmTTL;
-    private Map<String, Object> prblm, sltns;
-    private FirebaseAuth fAuth;
+    private DatabaseReference prblmRef;
     private ProgressBar PBP;
     private FirebaseStorage storage;
-    private StorageReference imgRef;
-    private StorageMetadata metadata;
-    private UploadTask upTask;
-    private ArrayList<String> prblmTitle;
-    private ByteArrayOutputStream baos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +67,10 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         prblmDB = FirebaseDatabase.getInstance();
         PBP = findViewById(R.id.PBPrblm);
         storage = FirebaseStorage.getInstance();
-        fAuth = FirebaseAuth.getInstance();
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
         uID = fAuth.getCurrentUser().getUid();
+        prblmID = prblmDB.getReference().push().getKey();
+
 
     }
 
@@ -94,6 +91,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
 
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+
         }
         if (v == butRecPrblm) {
             txtTitle = editTitle.getText().toString();
@@ -102,9 +100,10 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
                 PBP.setVisibility(View.INVISIBLE);
                 return;
             }
-            prblmRef = prblmDB.getReference("Problems Text").child(uID + " | " + txtTitle);
+            prblmRef = prblmDB.getReference("Problems").child(txtTitle);
             prblmID = prblmRef.getKey();
-            Intent intentDiscover = new Intent(this, PopupRecPage.class).putExtra("from", prblmID);
+            Intent intentDiscover = new Intent(this, PopupRecPage.class);
+            intentDiscover.putExtra("from", prblmID);
             intentDiscover.putExtra("title", txtTitle);
             intentDiscover.putExtra("sl/pr", "Problem");
             startActivity(intentDiscover);
@@ -120,7 +119,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         PBP.setVisibility(View.VISIBLE);
 
         txtTitle = editTitle.getText().toString();
-        txtDes = editDesc.getText().toString();
+        String txtDes = editDesc.getText().toString();
 
         if (TextUtils.isEmpty(txtTitle)) {
             editTitle.setError("Problem Title Needed");
@@ -131,22 +130,17 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        prblmRef = prblmDB.getReference("Problems Text").child(uID + " | " + txtTitle);
-        prblm = new HashMap<>();
+        prblmRef = prblmDB.getReference("Problems").child(txtTitle);
+        Map<String, Object> prblm = new HashMap<>();
         prblm.put("Prblm ID: ", prblmID);
         prblm.put("Server ID: ", uID);
         prblm.put("Prblm Title: ", txtTitle);
         prblm.put("Prblm Description:", txtDes);
-        prblm.put("Problem Image URL: ", imageURL);
+        prblm.put("Prblm Image: ", imageURL);
         prblm.put("Prblm Record: ", recURL);
 
         prblmRef.setValue(prblm);
 
-        prblmTTL = prblmDB.getReference("Solutions").child(txtTitle);
-        sltns = new HashMap<>();
-        sltns.put("Prblm ID: ", prblmID);
-        sltns.put("Prblm Title: ", txtTitle);
-        prblmTTL.setValue(sltns);
         PBP.setVisibility(View.INVISIBLE);
 
         Toast.makeText(getApplicationContext(), "Problem Saved!", Toast.LENGTH_SHORT).show();
@@ -159,20 +153,20 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case PICK_IMAGE_ID:
+                txtTitle = editTitle.getText().toString();
                 Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
-                baos = new ByteArrayOutputStream();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
                 String date = dateFormat.format(new Date());
-                String photoFile = "prblmImage" + "_" + txtTitle + "_" + date + ".jpg";
+                String photoFile = "Problem" + " | " + prblmID + " | " + date + ".jpg";
                 byte[] daata = baos.toByteArray();
 
-                prblmRef = prblmDB.getReference("Problems Text").child(uID + " | " + txtTitle);
-                prblmID = prblmRef.getKey();
-                imgRef = storage.getReference("Problems Pictures").child(txtTitle + " | " + prblmID);
-                metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
-                upTask = imgRef.putBytes(daata, metadata);
-                imageURL = imgRef.getDownloadUrl().toString();
+                prblmRef = prblmDB.getReference("Problems").child(txtTitle);
+                StorageReference imgRef = storage.getReference("Problems Pictures").child(txtTitle);
+                StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
+                UploadTask upTask = imgRef.putBytes(daata, metadata);
+                imageURL = imgRef.toString();
 
 
                 Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
