@@ -2,10 +2,11 @@ package com.example.igi;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,9 +16,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,9 +32,12 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -81,15 +85,24 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         prblmDB = FirebaseDatabase.getInstance();
 
         {
-            //TODO check why int java.util.List.size() is null
-            /*
-            listProblem = (Spinner) findViewById(R.id.problemList);
-            int num = 5;
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, num, problemTitles());
+            //TODO check why nothing appears
+
+            listProblem = findViewById(R.id.problemList);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, problemTitles());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             listProblem.setAdapter(adapter);
+            listProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    prblmName = parent.getItemAtPosition(position).toString();
+                }
 
-             */
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
         }
         fAuth = FirebaseAuth.getInstance();
         editTitle = findViewById(R.id.frmSltnTitle);
@@ -126,7 +139,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                 SPB.setVisibility(View.INVISIBLE);
                 return;
             }
-            sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: "+txtTitle);
+            sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: " + txtTitle);
             sltnID = sltnRef.getKey();
             Intent intentDiscover = new Intent(this, PopupRecPage.class);
             intentDiscover.putExtra("from", sltnID);
@@ -140,28 +153,162 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
+
     public List<String> problemTitles() {
+        problemArray = new List<String>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(@Nullable Object o) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public Iterator<String> iterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @NonNull
+            @Override
+            public <T> T[] toArray(@NonNull T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(@Nullable Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(@NonNull Collection<? extends String> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, @NonNull Collection<? extends String> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public String get(int index) {
+                return null;
+            }
+
+            @Override
+            public String set(int index, String element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, String element) {
+
+            }
+
+            @Override
+            public String remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(@Nullable Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(@Nullable Object o) {
+                return 0;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<String> listIterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<String> listIterator(int index) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public List<String> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
         DatabaseReference prblmRef = prblmDB.getReference("Problems");
-        ValueEventListener eventListener = new ValueEventListener() {
+        prblmRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    problemArray.add(ds.toString());
+                int i =0;
+                Log.e("Count ", "" + dataSnapshot.getChildrenCount());
+                /*if (dataSnapshot.getChildren()==null){
+
+                    return;
+                }*/
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {        //TODO the get data doesnt shown on run and round number does
+                    Log.println(Log.DEBUG, "round number", String.valueOf((i++)));
+
+                    problemArray.add(ds.getValue(true).toString());
+                    if(problemArray.get(0)!=null) {
+                        Log.println(Log.DEBUG,"Get Data: ", problemArray.get(0));
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("the read failed: ", databaseError.getMessage());
             }
-        };
-        prblmRef.addValueEventListener(eventListener);
+        });
+        Log.println(Log.DEBUG, "ValueEventListener: ", "Done");
         return problemArray;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_ID) {
             txtTitle = editTitle.getText().toString();
-            prblmName = "nothing works";
             sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: " + txtTitle);
             Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -197,14 +344,8 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             return;
         }
         uID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
-        //prblmName = listProblem.getSelectedItem().toString();
-        /*if (TextUtils.isEmpty(prblmName)) {
-            Toast.makeText(getApplicationContext(), "You Must Choose Problem First!", Toast.LENGTH_SHORT).show();
-            SPB.setVisibility(View.INVISIBLE);
-            return;
-        }*/
-        prblmName = "nothing works";
-        sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: "+txtTitle);
+        //prblmName = "nothing works";
+        sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: " + txtTitle);
         Map<String, Object> sltn = new HashMap<>();
         sltn.put("Sltn ID: ", sltnID);
         sltn.put("Server ID: ", uID);

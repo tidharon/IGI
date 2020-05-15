@@ -68,7 +68,7 @@ public class PopupRecPage extends AppCompatActivity {
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(outputFile);
-
+            //TODO check why records don't go to the storage and only metadata does
         recProcess();
     }
 
