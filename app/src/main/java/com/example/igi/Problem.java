@@ -2,6 +2,7 @@ package com.example.igi;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Problem extends AppCompatActivity implements View.OnClickListener {
     private static final int PICK_IMAGE_ID = 234; // the number doesn't matter
@@ -70,7 +73,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         PBP = findViewById(R.id.PBPrblm);
         storage = FirebaseStorage.getInstance();
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
-        uID = fAuth.getCurrentUser().getUid();
+        uID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
         //prblmID = prblmDB.collection("Problems").document().getId();
 
 
@@ -153,6 +156,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         finish();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {

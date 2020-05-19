@@ -2,6 +2,7 @@ package com.example.igi;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,26 +18,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Document;
-
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -158,7 +160,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
 
     public List<String> problemTitles() {
-        final List<String> problemArray = new List<String>() {
+        final List<String> problemList = new List<String>() {
             @Override
             public int size() {
                 return 0;
@@ -280,7 +282,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                 return null;
             }
         };
-        CollectionReference prblmRef = prblmDB.collection("Problems");
+        final CollectionReference prblmRef = prblmDB.collection("Problems");
         /*prblmRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -295,8 +297,8 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                         break;
                     }
 
-                    Log.d("is the list empty: ", String.valueOf(problemArray.get(0)));
-                    problemArray.add(ds.getKey());
+                    Log.d("is the list empty: ", String.valueOf(problemList.get(0)));
+                    problemList.add(ds.getKey());
                     Log.println(Log.INFO, "round value", ds.getKey());
                 }
             }
@@ -306,12 +308,27 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                 Log.e("the read failed: ", databaseError.getMessage());
             }
         });*/
+        prblmDB.collection("Problems").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            problemList.add(document.get("Prblm Title: ").toString());
+                        Log.d("document title: ", document.get("Prblm Title: ").toString());
+                    }
+                    Log.d("problem array: ", problemList.toString());
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
         Log.println(Log.DEBUG, "ValueEventListener: ", "Done");
         SPB.setVisibility(View.INVISIBLE);
-        Log.i("list value", problemArray.toString());
-        return problemArray;
+        Log.i("list value", problemList.toString());
+        return problemList;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_ID) {
             txtTitle = editTitle.getText().toString();

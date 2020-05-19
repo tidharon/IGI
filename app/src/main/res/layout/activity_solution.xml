@@ -23,6 +23,7 @@
         android:layout_width="237dp"
         android:layout_height="403dp"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="300dp"
         android:contentDescription="@string/todo"
         android:rotation="15"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,8 +57,8 @@
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="314dp"
-        android:layout_height="477dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="20dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
