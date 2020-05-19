@@ -69,6 +69,7 @@ public class PopupRecPage extends AppCompatActivity {
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(outputFile);
             //TODO check why records don't go to the storage and only metadata does
+            //TODO maybe because theres no microphone in the emulator
         recProcess();
     }
 

@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -43,8 +45,8 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     private String uID;
     private String imageURL;
     private String recURL;
-    private FirebaseDatabase prblmDB;
-    private DatabaseReference prblmRef;
+    private FirebaseFirestore prblmDB;
+    private DocumentReference prblmRef;
     private ProgressBar PBP;
     private FirebaseStorage storage;
 
@@ -64,12 +66,12 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         butSubmit.setOnClickListener(this);
         editTitle = findViewById(R.id.frmPrblmTitle);
         editDesc = findViewById(R.id.frmPrblmDes);
-        prblmDB = FirebaseDatabase.getInstance();
+        prblmDB = FirebaseFirestore.getInstance();
         PBP = findViewById(R.id.PBPrblm);
         storage = FirebaseStorage.getInstance();
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
         uID = fAuth.getCurrentUser().getUid();
-        prblmID = prblmDB.getReference().push().getKey();
+        //prblmID = prblmDB.collection("Problems").document().getId();
 
 
     }
@@ -88,7 +90,8 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
                 PBP.setVisibility(View.INVISIBLE);
                 return;
             }
-
+            prblmRef = prblmDB.collection("Problems").document(txtTitle);
+            prblmID = prblmRef.getId();
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
 
@@ -100,8 +103,8 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
                 PBP.setVisibility(View.INVISIBLE);
                 return;
             }
-            prblmRef = prblmDB.getReference("Problems").child(txtTitle);
-            prblmID = prblmRef.getKey();
+            prblmRef = prblmDB.collection("Problems").document(txtTitle);
+            prblmID = prblmRef.getId();
             Intent intentDiscover = new Intent(this, PopupRecPage.class);
             intentDiscover.putExtra("from", prblmID);
             intentDiscover.putExtra("title", txtTitle);
@@ -130,7 +133,8 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        prblmRef = prblmDB.getReference("Problems").child(txtTitle);
+        prblmRef = prblmDB.collection("Problems").document(txtTitle);
+        prblmID = prblmRef.getId();
         Map<String, Object> prblm = new HashMap<>();
         prblm.put("Prblm ID: ", prblmID);
         prblm.put("Server ID: ", uID);
@@ -139,7 +143,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         prblm.put("Prblm Image: ", imageURL);
         prblm.put("Prblm Record: ", recURL);
 
-        prblmRef.setValue(prblm);
+        prblmRef.set(prblm);
 
         PBP.setVisibility(View.INVISIBLE);
 
@@ -154,6 +158,8 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         switch (requestCode) {
             case PICK_IMAGE_ID:
                 txtTitle = editTitle.getText().toString();
+                prblmRef = prblmDB.collection("Problems").document(txtTitle);
+                prblmID = prblmRef.getId();
                 Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -162,7 +168,7 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
                 String photoFile = "Problem" + " | " + prblmID + " | " + date + ".jpg";
                 byte[] daata = baos.toByteArray();
 
-                prblmRef = prblmDB.getReference("Problems").child(txtTitle);
+                prblmRef = prblmDB.collection("Problems").document(txtTitle);
                 StorageReference imgRef = storage.getReference("Problems Pictures").child(txtTitle);
                 StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
                 UploadTask upTask = imgRef.putBytes(daata, metadata);

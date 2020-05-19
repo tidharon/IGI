@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.FileOutputStream;
@@ -27,33 +28,24 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     private Button butSubmit;
     private ImageView butInfo;
     private EditText frmTitle, frmDes;
-    private FileOutputStream devFile;
-    private String txtTitle, txtDes, userMail;
-    private int num = 0;
     private FirebaseAuth fAuth;
-    private FirebaseFirestore fstore;
-    private String uID, userName;
-    private DatabaseReference devlpRef;
-    private String TAG = "igi";
-    private FirebaseDatabase devlpDB;
-    private Map<String, Object> devlp;
+    private FirebaseFirestore devlpDB;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_develop);
-        butSubmit = (Button) findViewById(R.id.dvlpSubmitBut);
+        butSubmit = findViewById(R.id.dvlpSubmitBut);
         butSubmit.setOnClickListener(this);
-        butInfo = (ImageView) findViewById(R.id.info_but);
+        butInfo = findViewById(R.id.info_but);
         butInfo.setOnClickListener(this);
         frmTitle = findViewById(id.frmDvlpTitle);
         frmDes = findViewById(id.frmDvlpDes);
         frmTitle.setOnClickListener(this);
         frmDes.setOnClickListener(this);
-        num++;
         fAuth = FirebaseAuth.getInstance();
-        devlpDB = FirebaseDatabase.getInstance();
+        devlpDB = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -64,10 +56,10 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
             startActivity(intentDiscover);
         }
         if (v == butSubmit) {
-            txtTitle = frmTitle.getText().toString();
-            txtDes = frmDes.getText().toString();
-            uID = fAuth.getCurrentUser().getUid();
-            userMail = fAuth.getCurrentUser().getEmail();
+            String txtTitle = frmTitle.getText().toString();
+            String txtDes = frmDes.getText().toString();
+            String uID = fAuth.getCurrentUser().getUid();
+            String userMail = fAuth.getCurrentUser().getEmail();
 
 
             if (TextUtils.isEmpty(txtTitle)) {
@@ -78,13 +70,13 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
                 frmDes.setError("Skill Description Needed");
             }
 
-            devlpRef = devlpDB.getReference("Developers").child(uID +" | "+txtTitle);
-            devlp = new HashMap<>();
+            DocumentReference devlpRef = devlpDB.collection("Developers").document(uID + " | " + txtTitle);
+            Map<String, Object> devlp = new HashMap<>();
             devlp.put("Dvlp Title: ", txtTitle);
             devlp.put("Dvlp Mail: ", userMail);
             devlp.put("Dvlp ID: ", uID);
             devlp.put("Dvlp Description:", txtDes);
-            devlpRef.setValue(devlp);
+            devlpRef.set(devlp);
 
             Toast.makeText(getApplicationContext(), "Thank You For Helping!", Toast.LENGTH_SHORT).show();
             Intent intentLogin = new Intent(this, HomeScreen.class);

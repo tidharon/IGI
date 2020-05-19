@@ -9,20 +9,22 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
+
+import androidx.annotation.RequiresApi;
+import androidx.exifinterface.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.igi.R;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ImagePicker extends AppCompatActivity {
 
@@ -42,11 +44,9 @@ public class ImagePicker extends AppCompatActivity {
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takePhotoIntent.putExtra("return-data", true);
-        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile(context)));
-        intentList = addIntentsToList(context, intentList, pickIntent);
-        for (Intent intent : intentList = addIntentsToList(context, intentList, takePhotoIntent)) {
-
-        }
+        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile(context)));//TODO here it crash on external device (exposed beyond app through ClipData.Item.getUri())
+        addIntentsToList(context, intentList, pickIntent);
+        addIntentsToList(context, intentList, takePhotoIntent);
         ;
 
         if (intentList.size() > 0) {
@@ -58,7 +58,7 @@ public class ImagePicker extends AppCompatActivity {
         return chooserIntent;
     }
 
-    private static List<Intent> addIntentsToList(Context context, List<Intent> list, Intent intent) {
+    private static void addIntentsToList(Context context, List<Intent> list, Intent intent) {
         List<ResolveInfo> resInfo = context.getPackageManager().queryIntentActivities(intent, 0);
         for (ResolveInfo resolveInfo : resInfo) {
             String packageName = resolveInfo.activityInfo.packageName;
@@ -67,10 +67,10 @@ public class ImagePicker extends AppCompatActivity {
             list.add(targetedIntent);
             Log.d(TAG, "Intent: " + intent.getAction() + " package: " + packageName);
         }
-        return list;
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public static Bitmap getImageFromResult(Context context, int resultCode,
                                             Intent imageReturnedIntent) {
         Log.d(TAG, "getImageFromResult, resultCode: " + resultCode);
@@ -98,7 +98,7 @@ public class ImagePicker extends AppCompatActivity {
 
     private static File getTempFile(Context context) {
         File imageFile = new File(context.getExternalCacheDir(), TEMP_IMAGE_NAME);
-        imageFile.getParentFile().mkdirs();
+        Objects.requireNonNull(imageFile.getParentFile()).mkdirs();
         return imageFile;
     }
 
@@ -113,6 +113,7 @@ public class ImagePicker extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        assert fileDescriptor != null;
         Bitmap actuallyUsableBitmap = BitmapFactory.decodeFileDescriptor(
                 fileDescriptor.getFileDescriptor(), null, options);
 
@@ -138,6 +139,7 @@ public class ImagePicker extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     private static int getRotation(Context context, Uri imageUri, boolean isCamera) {
         int rotation;
         if (isCamera) {
@@ -154,7 +156,7 @@ public class ImagePicker extends AppCompatActivity {
         try {
 
             context.getContentResolver().notifyChange(imageFile, null);
-            ExifInterface exif = new ExifInterface(imageFile.getPath());
+            ExifInterface exif = new ExifInterface(Objects.requireNonNull(imageFile.getPath()));
             int orientation = exif.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL);
@@ -176,23 +178,18 @@ public class ImagePicker extends AppCompatActivity {
         return rotate;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public static int getRotationFromGallery(Context context, Uri imageUri) {
         int result = 0;
         String[] columns = {MediaStore.Images.Media.ORIENTATION};
-        Cursor cursor = null;
-        try {
-            cursor = context.getContentResolver().query(imageUri, columns, null, null, null);
+        try (Cursor cursor = context.getContentResolver().query(imageUri, columns, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 int orientationColumnIndex = cursor.getColumnIndex(columns[0]);
                 result = cursor.getInt(orientationColumnIndex);
             }
         } catch (Exception e) {
             //Do nothing
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }//End of try-catch block
+        }
         return result;
     }
 
@@ -201,8 +198,7 @@ public class ImagePicker extends AppCompatActivity {
         if (rotation != 0) {
             Matrix matrix = new Matrix();
             matrix.postRotate(rotation);
-            Bitmap bmOut = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
-            return bmOut;
+            return Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
         }
         return bm;
     }

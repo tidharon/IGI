@@ -33,7 +33,9 @@ public class signup extends AppCompatActivity implements OnClickListener {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fsInfo;
     private ProgressBar PBSignup;
-    private String email, name, password, uID;
+    private String email;
+    private String name;
+    private String uID;
     private DocumentReference documentReference;
     private Map<String, Object> user;
 
@@ -66,7 +68,7 @@ public class signup extends AppCompatActivity implements OnClickListener {
 
             email = editEmail.getText().toString().trim();
             name = editName.getText().toString();
-            password = editPassword.getText().toString().trim();
+            String password = editPassword.getText().toString().trim();
 
             if (TextUtils.isEmpty(email)) {
                 editEmail.setError("Please Enter Email");

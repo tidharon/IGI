@@ -25,10 +25,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -47,9 +52,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
     private Button butRecSltn;
     private ImageView butInfo;
     private Button butSubmit;
-    private Spinner listProblem;
     private EditText editTitle, editDesc;
-    private List<String> problemArray;
     private String TAG = "igi";
     private int requestCode;
     private int resultCode;
@@ -63,8 +66,8 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
     private FirebaseAuth fAuth;
     private FirebaseStorage storage;
     private ProgressBar SPB;
-    private FirebaseDatabase prblmDB;
-    private DatabaseReference sltnRef;
+    private FirebaseFirestore prblmDB;
+    private DocumentReference sltnRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +85,16 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         butSubmit = (Button) findViewById(R.id.submit_but);
         butSubmit.setOnClickListener(this);
         SPB = findViewById(R.id.PBSolution);
-        prblmDB = FirebaseDatabase.getInstance();
+        prblmDB = FirebaseFirestore.getInstance();
 
         {
             //TODO check why nothing appears
 
-            listProblem = findViewById(R.id.problemList);
+            Spinner listProblem = findViewById(R.id.problemList);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, problemTitles());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             listProblem.setAdapter(adapter);
+
             listProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -106,10 +110,9 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         }
         fAuth = FirebaseAuth.getInstance();
         editTitle = findViewById(R.id.frmSltnTitle);
-        editDesc = findViewById(R.id.frmSltnTitle);
+        editDesc = findViewById(R.id.frmSltnDes);
         uID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
         storage = FirebaseStorage.getInstance();
-        sltnID = prblmDB.getReference().push().getKey();
 
     }
 
@@ -139,8 +142,8 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                 SPB.setVisibility(View.INVISIBLE);
                 return;
             }
-            sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: " + txtTitle);
-            sltnID = sltnRef.getKey();
+            sltnRef = prblmDB.collection("Problems").document(prblmName).collection("Solutions").document(txtTitle);
+            sltnID = sltnRef.getId();
             Intent intentDiscover = new Intent(this, PopupRecPage.class);
             intentDiscover.putExtra("from", sltnID);
             intentDiscover.putExtra("title", txtTitle);
@@ -155,7 +158,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
 
     public List<String> problemTitles() {
-        problemArray = new List<String>() {
+        final List<String> problemArray = new List<String>() {
             @Override
             public int size() {
                 return 0;
@@ -277,23 +280,24 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                 return null;
             }
         };
-        DatabaseReference prblmRef = prblmDB.getReference("Problems");
-        prblmRef.addValueEventListener(new ValueEventListener() {
+        CollectionReference prblmRef = prblmDB.collection("Problems");
+        /*prblmRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int i =0;
+                int i = 0;
+
                 Log.e("Count ", "" + dataSnapshot.getChildrenCount());
-                /*if (dataSnapshot.getChildren()==null){
 
-                    return;
-                }*/
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {        //TODO the get data doesnt shown on run and round number does
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {        //TODO the data now arrive and show on debug but not on list.get
                     Log.println(Log.DEBUG, "round number", String.valueOf((i++)));
+                    if (ds.getValue() == null) {
 
-                    problemArray.add(ds.getValue(true).toString());
-                    if(problemArray.get(0)!=null) {
-                        Log.println(Log.DEBUG,"Get Data: ", problemArray.get(0));
+                        break;
                     }
+
+                    Log.d("is the list empty: ", String.valueOf(problemArray.get(0)));
+                    problemArray.add(ds.getKey());
+                    Log.println(Log.INFO, "round value", ds.getKey());
                 }
             }
 
@@ -301,15 +305,18 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("the read failed: ", databaseError.getMessage());
             }
-        });
+        });*/
         Log.println(Log.DEBUG, "ValueEventListener: ", "Done");
+        SPB.setVisibility(View.INVISIBLE);
+        Log.i("list value", problemArray.toString());
         return problemArray;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_ID) {
             txtTitle = editTitle.getText().toString();
-            sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: " + txtTitle);
+            sltnRef = prblmDB.collection("Problems").document(prblmName).collection("Solutions").document(txtTitle);
+            sltnID = sltnRef.getId();
             Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -345,7 +352,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         }
         uID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
         //prblmName = "nothing works";
-        sltnRef = prblmDB.getReference("Problems").child(prblmName).child("Solution: " + txtTitle);
+        sltnRef = prblmDB.collection("Problems").document(prblmName).collection("Solutions").document(txtTitle);
         Map<String, Object> sltn = new HashMap<>();
         sltn.put("Sltn ID: ", sltnID);
         sltn.put("Server ID: ", uID);
@@ -353,7 +360,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         sltn.put("Sltn Description: ", txtDes);
         sltn.put("Sltn Image: ", imageURL);
         sltn.put("Sltn Record: ", recURL);
-        sltnRef.setValue(sltn);
+        sltnRef.set(sltn);
 
         SPB.setVisibility(View.INVISIBLE);
 

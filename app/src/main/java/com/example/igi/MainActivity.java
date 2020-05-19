@@ -128,9 +128,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (TextUtils.isEmpty(email)) {
                 editUsername.setError("Please enter Your Email");
+                return;
             }
             if (TextUtils.isEmpty(password)) {
                 editPassword.setError("please enter password");
+                return;
             }
 
             fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
