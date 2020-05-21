@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/DevelopTitle"
-        android:layout_width="318dp"
+        android:layout_width="wrap_content"
         android:layout_height="58dp"
         android:text="Help Developing"
         android:textAlignment="center"

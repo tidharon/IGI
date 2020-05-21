@@ -29,7 +29,9 @@ import java.util.Map;
 public class signup extends AppCompatActivity implements OnClickListener {
     private Button butSignUp;
     private ImageView butInfo;
-    private EditText editEmail, editName, editPassword;
+    private EditText editEmail;
+    private EditText editName;
+    private EditText editPassword;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fsInfo;
     private ProgressBar PBSignup;

@@ -17,12 +17,12 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
     Double back press to exit app
      */
     private static long back_pressed;
-    Button butToDiscover;
-    Button butToSolution;
-    Button butToDevelop;
-    ImageView butInfo;
-    ImageView butLogout;
-    ProgressBar PBLogout;
+    private Button butToDiscover;
+    private Button butToSolution;
+    private Button butToDevelop;
+    private ImageView butInfo;
+    private ImageView butLogout;
+    private ProgressBar PBLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

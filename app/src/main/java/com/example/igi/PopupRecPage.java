@@ -27,7 +27,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PopupRecPage extends AppCompatActivity {
-    private Button butStartRec, butPlayRec, butPauseRec;
+    private Button butStartRec;
+    private Button butPlayRec;
+    private Button butPauseRec;
     private MediaRecorder myAudioRecorder;
     private String outputFile;
     private String lastID;
@@ -68,8 +70,8 @@ public class PopupRecPage extends AppCompatActivity {
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(outputFile);
-            //TODO check why records don't go to the storage and only metadata does
-            //TODO maybe because theres no microphone in the emulator
+        //TODO check why records don't go to the storage and only metadata does
+        //TODO maybe because theres no microphone in the emulator
         recProcess();
     }
 
@@ -111,21 +113,24 @@ public class PopupRecPage extends AppCompatActivity {
                     PBR.setVisibility(View.VISIBLE);
                     myAudioRecorder.stop();
                     myAudioRecorder.release();
-                    myAudioRecorder = null;
 
                     recRef = storage.getReference(lastAct + " Records").child(lastTitle);
                     metadata = new StorageMetadata.Builder().setCustomMetadata(lastID, outputFile).build();
+
+
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     byte[] daata = baos.toByteArray();
                     uploadTask = (UploadTask) recRef.putBytes(daata, metadata).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            recURL = recRef.toString();
+                            getIntent().putExtra("recURL", recURL);
+                            myAudioRecorder = null;
                             PBR.setVisibility(View.INVISIBLE);
-
                         }
                     });
-                    recURL = recRef.toString();
-                    getIntent().putExtra("recURL", recURL);
+
+
                     Toast.makeText(getApplicationContext(), "Audio Recorded successfully", Toast.LENGTH_SHORT).show();
                 } catch (IllegalStateException e) {
                     e.printStackTrace();

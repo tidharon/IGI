@@ -12,12 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +24,8 @@ import static com.example.igi.R.layout;
 public class Develop extends AppCompatActivity implements View.OnClickListener {
     private Button butSubmit;
     private ImageView butInfo;
-    private EditText frmTitle, frmDes;
+    private EditText frmTitle;
+    private EditText frmDes;
     private FirebaseAuth fAuth;
     private FirebaseFirestore devlpDB;
 

@@ -16,8 +16,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,7 +37,8 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     private Button butRecPrblm;
     private ImageView butInfo;
     private Button butSubmit;
-    private EditText editTitle, editDesc;
+    private EditText editTitle;
+    private EditText editDesc;
     private String TAG = "igi";
     private int requestCode;
     private int resultCode;
@@ -121,6 +120,39 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case PICK_IMAGE_ID:
+                txtTitle = editTitle.getText().toString();
+                prblmRef = prblmDB.collection("Problems").document(txtTitle);
+                prblmID = prblmRef.getId();
+                Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+                String date = dateFormat.format(new Date());
+                String photoFile = "Problem" + " | " + prblmID + " | " + date + ".jpg";
+                byte[] daata = baos.toByteArray();
+
+                prblmRef = prblmDB.collection("Problems").document(txtTitle);
+                StorageReference imgRef = storage.getReference("Problems Pictures").child(txtTitle);
+                StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
+                UploadTask upTask = imgRef.putBytes(daata, metadata);
+                imageURL = imgRef.toString();
+
+
+                Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
+                PBP.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                PBP.setVisibility(View.INVISIBLE);
+                break;
+        }
+    }
+
     private void submission() {
         PBP.setVisibility(View.VISIBLE);
 
@@ -154,38 +186,5 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         Intent intentLogin = new Intent(this, HomeScreen.class);
         startActivity(intentLogin);
         finish();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case PICK_IMAGE_ID:
-                txtTitle = editTitle.getText().toString();
-                prblmRef = prblmDB.collection("Problems").document(txtTitle);
-                prblmID = prblmRef.getId();
-                Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
-                String date = dateFormat.format(new Date());
-                String photoFile = "Problem" + " | " + prblmID + " | " + date + ".jpg";
-                byte[] daata = baos.toByteArray();
-
-                prblmRef = prblmDB.collection("Problems").document(txtTitle);
-                StorageReference imgRef = storage.getReference("Problems Pictures").child(txtTitle);
-                StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
-                UploadTask upTask = imgRef.putBytes(daata, metadata);
-                imageURL = imgRef.toString();
-
-
-                Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
-                PBP.setVisibility(View.INVISIBLE);
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                PBP.setVisibility(View.INVISIBLE);
-                break;
-        }
     }
 }

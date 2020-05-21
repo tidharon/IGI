@@ -9,13 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import static com.example.igi.R.id.info_long;
 
 public class InfoPage extends AppCompatActivity {
-    TextView txtDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_page);
-        txtDetails = (TextView) findViewById(info_long);
+        TextView txtDetails = findViewById(info_long);
         txtDetails.setText("IGI's Idea\n" +
                 "\n" +
                 "IGI established to give the world an easy and simple way to bring out solutions to daily problems that everyone is dealing with.\n" +

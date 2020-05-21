@@ -42,7 +42,7 @@
 
     <TextView
         android:id="@+id/SolutionTitle"
-        android:layout_width="288dp"
+        android:layout_width="wrap_content"
         android:layout_height="58dp"
         android:text="Suggest Solution"
         android:textAlignment="center"
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="20dp"
-        android:fillViewport="true"
+        android:fillViewport="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -79,7 +79,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/cardview_but" />
+                android:background="@drawable/cardview_but"
+                android:contextClickable="true" />
 
             <Space
                 android:layout_width="match_parent"

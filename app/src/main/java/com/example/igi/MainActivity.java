@@ -28,18 +28,14 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int RequestPermissionCode = 1;
-    /*
-    Double back press to exit app
-     */
     private static long back_pressed;
     private Button butLogin;
     private Button butToSignUp;
     private Button butInfo;
-    private String Tag = "IGI";
-    private EditText editUsername, editPassword;
+    private EditText editUsername;
+    private EditText editPassword;
     private ProgressBar PBLogin;
     private FirebaseAuth fAuth;
-    private String email, password;
 
     /**
      * This function requests permissions
@@ -91,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(Tag, "started");
+        String tag = "IGI";
+        Log.d(tag, "started");
 
         if (!checkPermission()) {
             requestPermission();
@@ -123,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             PBLogin.setVisibility(View.VISIBLE);
 
-            email = editUsername.getText().toString().trim();
-            password = editPassword.getText().toString().trim();
+            String email = editUsername.getText().toString().trim();
+            String password = editPassword.getText().toString().trim();
 
             if (TextUtils.isEmpty(email)) {
                 editUsername.setError("Please enter Your Email");
