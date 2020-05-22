@@ -69,6 +69,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Toast.makeText(this, "Tap The Orange Top Rectangle And Choose Problem First!", Toast.LENGTH_LONG).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solution);
         imageURL = "Not Taken";
@@ -92,6 +93,24 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, problemTitles());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             listProblem.setAdapter(adapter);
+            listProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    prblmName = listProblem.getItemAtPosition(position).toString();
+                    Log.e("problem chosen", prblmName);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            try {
+                prblmName = listProblem.getSelectedItem().toString();
+                Log.e("problem selected", prblmName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         fAuth = FirebaseAuth.getInstance();
         editTitle = findViewById(R.id.frmSltnTitle);

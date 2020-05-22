@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
@@ -25,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class PopupRecPage extends AppCompatActivity {
     private Button butStartRec;
@@ -34,6 +36,7 @@ public class PopupRecPage extends AppCompatActivity {
     private String outputFile;
     private String lastID;
     private String recURL;
+    private String uploadFile;
     private StorageReference recRef;
     private StorageMetadata metadata;
     private UploadTask uploadTask;
@@ -65,13 +68,13 @@ public class PopupRecPage extends AppCompatActivity {
         String date = dateFormat.format(new Date());
         storage = FirebaseStorage.getInstance();
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + ("/" + lastAct + " | " + lastID + " | " + date + ".3gp");
+        uploadFile = lastAct + " | " + lastID + " | " + date + ".3gp";
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(outputFile);
-        //TODO check why records don't go to the storage and only metadata does
-        //TODO maybe because theres no microphone in the emulator
+        //TODO from the emulator the records go as .3gp file but 0KB weight and from external device still upload only "application/octet-stream" file.
         recProcess();
     }
 
@@ -114,7 +117,7 @@ public class PopupRecPage extends AppCompatActivity {
                     myAudioRecorder.stop();
                     myAudioRecorder.release();
 
-                    recRef = storage.getReference(lastAct + " Records").child(lastTitle);
+                    recRef = storage.getReference(lastAct + " Records").child(lastTitle+"/"+uploadFile);
                     metadata = new StorageMetadata.Builder().setCustomMetadata(lastID, outputFile).build();
 
 
@@ -127,6 +130,11 @@ public class PopupRecPage extends AppCompatActivity {
                             getIntent().putExtra("recURL", recURL);
                             myAudioRecorder = null;
                             PBR.setVisibility(View.INVISIBLE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("upload failed because", Objects.requireNonNull(e.getMessage()));
                         }
                     });
 
