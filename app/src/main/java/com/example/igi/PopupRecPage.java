@@ -117,7 +117,7 @@ public class PopupRecPage extends AppCompatActivity {
                     myAudioRecorder.stop();
                     myAudioRecorder.release();
 
-                    recRef = storage.getReference(lastAct + " Records").child(lastTitle+"/"+uploadFile);
+                    recRef = storage.getReference(lastAct + " Records").child(lastTitle + "/" + uploadFile);
                     metadata = new StorageMetadata.Builder().setCustomMetadata(lastID, outputFile).build();
 
 

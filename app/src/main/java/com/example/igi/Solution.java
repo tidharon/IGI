@@ -37,7 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -130,7 +129,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             SPB.setVisibility(View.VISIBLE);
             txtTitle = editTitle.getText().toString();
 
-            if (listProblem.getSelectedItem()==null) {
+            if (listProblem.getSelectedItem() == null && prblmName == null) {
                 Toast.makeText(this, "You Must Choose Problem First!", Toast.LENGTH_SHORT).show();
                 SPB.setVisibility(View.INVISIBLE);
                 return;
@@ -148,7 +147,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         }
         if (v == butRecSltn) {
             txtTitle = editTitle.getText().toString();
-            if (listProblem.getSelectedItem()==null) {
+            if (listProblem.getSelectedItem() == null && prblmName == null) {
                 Toast.makeText(this, "You Must Choose Problem First!", Toast.LENGTH_SHORT).show();
                 SPB.setVisibility(View.INVISIBLE);
                 return;
@@ -226,7 +225,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
     protected void submission() {
         SPB.setVisibility(View.VISIBLE);
-        if (listProblem.getSelectedItem()==null) {
+        if (listProblem.getSelectedItem() == null && prblmName == null) {
             Toast.makeText(this, "You Must Choose Problem First!", Toast.LENGTH_SHORT).show();
             SPB.setVisibility(View.INVISIBLE);
             return;
@@ -262,7 +261,6 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         startActivity(intentLogin);
         finish();
     }
-
 
 
 }

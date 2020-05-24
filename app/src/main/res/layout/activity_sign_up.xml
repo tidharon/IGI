@@ -70,8 +70,10 @@
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fldPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/fldPassword"
+        app:layout_constraintVertical_bias="0.818" />
 
     <EditText
         android:id="@+id/fldEmail"
@@ -106,12 +108,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fldUsename"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintVertical_bias="0.456" />
 
     <EditText
         android:id="@+id/fldUsename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="264dp"
         android:autofillHints=""
         android:background="@drawable/emty_fld"
         android:ems="10"
@@ -124,7 +127,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fldEmail"
-        app:layout_constraintVertical_bias="0.178" />
+        app:layout_constraintVertical_bias="0.319" />
+
+    <EditText
+        android:id="@+id/fldPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:background="@drawable/emty_fld"
+        android:ems="10"
+        android:hint="  Phone Number"
+        android:inputType="phone"
+        android:textColor="#000000"
+        android:textColorHint="#8E8E8E"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fldUsename"
+        app:layout_constraintVertical_bias="0.112" />
 
     <ProgressBar
         android:id="@+id/Signup_progressBar"

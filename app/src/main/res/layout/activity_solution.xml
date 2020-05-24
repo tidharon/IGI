@@ -166,7 +166,7 @@
                 android:background="@drawable/des_frm_90"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="  Description"
+                android:hint="  Describe Solution And Professionals Needed"
                 android:inputType="textMultiLine"
                 android:textColor="#000000"
                 android:textColorHint="#8E8E8E"

@@ -32,12 +32,14 @@ public class signup extends AppCompatActivity implements OnClickListener {
     private EditText editEmail;
     private EditText editName;
     private EditText editPassword;
+    private EditText editPhone;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fsInfo;
     private ProgressBar PBSignup;
     private String email;
     private String name;
     private String uID;
+    private String phone;
     private DocumentReference documentReference;
     private Map<String, Object> user;
 
@@ -53,6 +55,7 @@ public class signup extends AppCompatActivity implements OnClickListener {
         editEmail = findViewById(R.id.fldEmail);
         editName = findViewById(R.id.fldUsename);
         editPassword = findViewById(R.id.fldPassword);
+        editPhone = findViewById(R.id.fldPhone);
         PBSignup = findViewById(R.id.Signup_progressBar);
 
         fAuth = FirebaseAuth.getInstance();
@@ -71,15 +74,23 @@ public class signup extends AppCompatActivity implements OnClickListener {
             email = editEmail.getText().toString().trim();
             name = editName.getText().toString();
             String password = editPassword.getText().toString().trim();
+            phone = editPhone.getText().toString().trim();
 
             if (TextUtils.isEmpty(email)) {
                 editEmail.setError("Please Enter Email");
+                return;
             }
             if (TextUtils.isEmpty(name)) {
                 editName.setError("Please enter Your Username");
+                return;
             }
             if (TextUtils.isEmpty(password)) {
                 editPassword.setError("please enter password");
+                return;
+            }
+            if (TextUtils.isEmpty(phone)){
+                editPhone.setError("Please Enter Your Phone Number");
+                return;
             }
 
 
@@ -93,6 +104,7 @@ public class signup extends AppCompatActivity implements OnClickListener {
                         user = new HashMap<>();
                         user.put("UserName", name);
                         user.put("Email", email);
+                        user.put("Phone Number", phone);
                         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
