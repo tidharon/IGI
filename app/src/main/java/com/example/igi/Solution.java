@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -61,8 +62,9 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
     private FirebaseAuth fAuth;
     private FirebaseStorage storage;
     private ProgressBar SPB;
-    private FirebaseFirestore prblmDB;
+    //private FirebaseFirestore prblmDB;
     private DocumentReference sltnRef;
+    private CollectionReference prblmDB;
     private ArrayList<String> problemList;
     private Spinner listProblem;
 
@@ -83,7 +85,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         butSubmit = (Button) findViewById(R.id.submit_but);
         butSubmit.setOnClickListener(this);
         SPB = findViewById(R.id.PBSolution);
-        prblmDB = FirebaseFirestore.getInstance();
+        prblmDB = FirebaseFirestore.getInstance().collection("Problems");
 
         {
             //TODO check why nothing appears on view
@@ -158,7 +160,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                 SPB.setVisibility(View.INVISIBLE);
                 return;
             }
-            sltnRef = prblmDB.collection("Problems").document(prblmName).collection("Solutions").document(txtTitle);
+            sltnRef = prblmDB.document(prblmName).collection("Solutions").document(txtTitle);
             sltnID = sltnRef.getId();
             Intent intentDiscover = new Intent(this, PopupRecPage.class);
             intentDiscover.putExtra("from", sltnID);
@@ -175,7 +177,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
     public ArrayList<String> problemTitles() {
         problemList = new ArrayList<>();
-        prblmDB.collection("Problems").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        prblmDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -184,7 +186,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
                         problemList.add(i++, Objects.requireNonNull(document.get("Prblm Title: ")).toString());
                         Log.d("document title: ", Objects.requireNonNull(document.get("Prblm Title: ")).toString());
                     }
-                    Log.d("list lenth: ", String.valueOf(problemList.size()));
+                    Log.d("list length: ", String.valueOf(problemList.size()));
                 } else {
                     Log.e(TAG, "Error getting documents: ", task.getException());
                 }
@@ -202,7 +204,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             txtTitle = editTitle.getText().toString();
             prblmName = listProblem.getSelectedItem().toString();
 
-            sltnRef = prblmDB.collection("Problems").document(prblmName).collection("Solutions").document(txtTitle);
+            sltnRef = prblmDB.document(prblmName).collection("Solutions").document(txtTitle);
             sltnID = sltnRef.getId();
             Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -244,7 +246,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             return;
         }
         uID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
-        sltnRef = prblmDB.collection("Problems").document(prblmName).collection("Solutions").document(txtTitle);
+        sltnRef = prblmDB.document(prblmName).collection("Solutions").document(txtTitle);
         Map<String, Object> sltn = new HashMap<>();
         sltn.put("Sltn ID: ", sltnID);
         sltn.put("Server ID: ", uID);
