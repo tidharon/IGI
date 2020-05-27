@@ -68,7 +68,6 @@ public class ImagePicker extends AppCompatActivity {
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public static Bitmap getImageFromResult(Context context, int resultCode,
                                             Intent imageReturnedIntent) {
@@ -93,7 +92,6 @@ public class ImagePicker extends AppCompatActivity {
         }
         return bm;
     }
-
 
     private static File getTempFile(Context context) {
         File imageFile = new File(context.getExternalCacheDir(), TEMP_IMAGE_NAME);

@@ -51,9 +51,6 @@ public class PopupRecPage extends AppCompatActivity {
         setContentView(R.layout.activity_popup_rec_page);
 
         setDisplay();
-        /*
-        recording process
-         */
 
         lastAct = getIntent().getStringExtra("sl/pr");
         lastID = getIntent().getStringExtra("from");
@@ -67,12 +64,13 @@ public class PopupRecPage extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
         String date = dateFormat.format(new Date());
         storage = FirebaseStorage.getInstance();
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + ("/" + lastAct + " | " + lastID + " | " + date + ".3gp");
         uploadFile = lastAct + " | " + lastID + " | " + date + ".3gp";
+        //here we set the path to keep the result file locally before upload:
+        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + ("/" + uploadFile);
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB); //this is the setup of the usage of the file for replay
         myAudioRecorder.setOutputFile(outputFile);
         //TODO from the emulator the records go as .3gp file but 0KB weight and from external device still upload only "application/octet-stream" file.
         recProcess();
@@ -82,9 +80,9 @@ public class PopupRecPage extends AppCompatActivity {
     set background size
      */
     protected void setDisplay() {
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
+        DisplayMetrics dm = new DisplayMetrics();       //here we create an object that contains an height ang width values
+        getWindowManager().getDefaultDisplay().getMetrics(dm);  //here we gives him the value of the correct user's screen
+            //here we set the activity's window size to be smaller then the original so the user may press outside and close the record process:
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         getWindow().setLayout((int) (width * 0.9), (int) (height * 0.4));
@@ -104,6 +102,7 @@ public class PopupRecPage extends AppCompatActivity {
                 } catch (IOException ioe) {
                     Log.println(Log.ERROR, "TAG", "Not Prepare");
                 }
+
                 butStartRec.setEnabled(false);
                 butPauseRec.setEnabled(true);
             }
@@ -118,11 +117,11 @@ public class PopupRecPage extends AppCompatActivity {
                     myAudioRecorder.release();
 
                     recRef = storage.getReference(lastAct + " Records").child(lastTitle + "/" + uploadFile);
+                    //here we set the file to fit the firebase storage conditions:
                     metadata = new StorageMetadata.Builder().setCustomMetadata(lastID, outputFile).build();
-
-
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     byte[] daata = baos.toByteArray();
+                    //here we upload the file and getting the information we need for future use
                     uploadTask = (UploadTask) recRef.putBytes(daata, metadata).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -134,7 +133,7 @@ public class PopupRecPage extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.e("upload failed because", Objects.requireNonNull(e.getMessage()));
+                            Log.e("upload failed because ", Objects.requireNonNull(e.getMessage()));
                         }
                     });
 
@@ -156,6 +155,7 @@ public class PopupRecPage extends AppCompatActivity {
             public void onClick(View v) {
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
+                    //here take the file recorded and play it for the user's ask:
                     mediaPlayer.setDataSource(outputFile);
                     mediaPlayer.prepare();
                     mediaPlayer.start();

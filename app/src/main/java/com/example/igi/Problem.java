@@ -31,18 +31,14 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Problem extends AppCompatActivity implements View.OnClickListener {
-    private static final int PICK_IMAGE_ID = 234; // the number doesn't matter
-    public String prblmID;
+    private static final int PICK_IMAGE_ID = 234; // the number doesn't matter and only used to make the picture process work
+    public String prblmPath;
     private Button butPhotoPrblm;
     private Button butRecPrblm;
     private ImageView butInfo;
     private Button butSubmit;
     private EditText editTitle;
     private EditText editDesc;
-    private String TAG = "igi";
-    private int requestCode;
-    private int resultCode;
-    private Intent data;
     private String txtTitle;
     private String uID;
     private String imageURL;
@@ -50,12 +46,13 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     private FirebaseFirestore prblmDB;
     private DocumentReference prblmRef;
     private ProgressBar PBP;
-    private FirebaseStorage storage;
+    private FirebaseStorage storage;        //this object used to save files to the stock
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem);
+            //set default value to strings for case the user won't use the image/record function
         imageURL = "Not Taken";
         recURL = "Not Taken";
         butPhotoPrblm = (Button) findViewById(R.id.butPhotoPrblm);
@@ -68,13 +65,12 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         butSubmit.setOnClickListener(this);
         editTitle = findViewById(R.id.frmPrblmTitle);
         editDesc = findViewById(R.id.frmPrblmDes);
-        prblmDB = FirebaseFirestore.getInstance();
         PBP = findViewById(R.id.PBPrblm);
+
+        prblmDB = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
         uID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
-        //prblmID = prblmDB.collection("Problems").document().getId();
-
 
     }
 
@@ -87,13 +83,14 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         if (v == butPhotoPrblm) {
             PBP.setVisibility(View.VISIBLE);
             txtTitle = editTitle.getText().toString();
+                //here we make sure the user did typed a title
             if (TextUtils.isEmpty(txtTitle)) {
                 editTitle.setError("Problem Title Needed");
                 PBP.setVisibility(View.INVISIBLE);
                 return;
             }
             prblmRef = prblmDB.collection("Problems").document(txtTitle);
-            prblmID = prblmRef.getId();
+            prblmPath = prblmRef.getId();
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(this);
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
 
@@ -106,13 +103,14 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
                 return;
             }
             prblmRef = prblmDB.collection("Problems").document(txtTitle);
-            prblmID = prblmRef.getId();
+            prblmPath = prblmRef.getId();
             Intent intentDiscover = new Intent(this, PopupRecPage.class);
-            intentDiscover.putExtra("from", prblmID);
+                //here we "send" information to the next activity to be used
+            intentDiscover.putExtra("from", prblmPath);
             intentDiscover.putExtra("title", txtTitle);
             intentDiscover.putExtra("sl/pr", "Problem");
             startActivity(intentDiscover);
-            recURL = getIntent().getStringExtra("recURL");
+            recURL = getIntent().getStringExtra("recURL");      //here we get the URL of the record taken
         }
         if (v == butSubmit) {
             PBP.setVisibility(View.VISIBLE);
@@ -125,22 +123,23 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case PICK_IMAGE_ID:
+                    //here we are setting the details for saving the photo:
                 txtTitle = editTitle.getText().toString();
                 prblmRef = prblmDB.collection("Problems").document(txtTitle);
-                prblmID = prblmRef.getId();
+                prblmPath = prblmRef.getId();
+                    //here we get and set the given photo:
                 Bitmap imageBitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
                 String date = dateFormat.format(new Date());
-                String photoFile = "Problem" + " | " + prblmID + " | " + date + ".jpg";
+                String photoFile = "Problem" + " | " + prblmPath + " | " + date + ".jpg";
                 byte[] daata = baos.toByteArray();
-
-                prblmRef = prblmDB.collection("Problems").document(txtTitle);
+                    //here we set the path and upload the image to the correct path
                 StorageReference imgRef = storage.getReference("Problems Pictures").child(txtTitle);
                 StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("prblm: ", photoFile).build();
                 UploadTask upTask = imgRef.putBytes(daata, metadata);
-                imageURL = imgRef.toString();
+                imageURL = imgRef.toString();   //here we get the download URL of the photo for saving in the firestore
 
 
                 Toast.makeText(getApplicationContext(), "Image Saved Successfully", Toast.LENGTH_SHORT).show();
@@ -169,9 +168,9 @@ public class Problem extends AppCompatActivity implements View.OnClickListener {
         }
 
         prblmRef = prblmDB.collection("Problems").document(txtTitle);
-        prblmID = prblmRef.getId();
+        prblmPath = prblmRef.getId();
         Map<String, Object> prblm = new HashMap<>();
-        prblm.put("Prblm ID: ", prblmID);
+        prblm.put("Prblm ID: ", prblmPath);
         prblm.put("Server ID: ", uID);
         prblm.put("Prblm Title: ", txtTitle);
         prblm.put("Prblm Description:", txtDes);

@@ -50,9 +50,6 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
     private EditText editTitle;
     private EditText editDesc;
     private String TAG = "igi";
-    private int requestCode;
-    private int resultCode;
-    private Intent data;
     private String txtTitle;
     private String uID;
     private String prblmName;
@@ -62,15 +59,13 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
     private FirebaseAuth fAuth;
     private FirebaseStorage storage;
     private ProgressBar SPB;
-    //private FirebaseFirestore prblmDB;
     private DocumentReference sltnRef;
     private CollectionReference prblmDB;
     private ArrayList<String> problemList;
-    private Spinner listProblem;
+    private Spinner listProblem;    //this object used to give the user easy way to look for and choose a problem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Toast.makeText(this, "Tap The Orange Top Rectangle And Choose Problem First!", Toast.LENGTH_LONG).show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solution);
         imageURL = "Not Taken";
@@ -88,12 +83,13 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
         prblmDB = FirebaseFirestore.getInstance().collection("Problems");
 
         {
-            //TODO check why nothing appears on view
             //TODO check why selectedItem returns null
             listProblem = findViewById(R.id.problemList);
+                //this object used to contain the list of problems and the settings for the spinner in the view
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, problemTitles());
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //here we set the display type of the values list in the spinner
             listProblem.setAdapter(adapter);
+                //here we get the user's selection from the spinner by compering index of selection and value index in the list:
             listProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -177,11 +173,14 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
     public ArrayList<String> problemTitles() {
         problemList = new ArrayList<>();
+            //here we go through the documents in the collection of problems and getting the problems' titles
         prblmDB.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                //here we are starting the process by using an object that contains data read from a document as part of a query.
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     int i = 0;
+                        //here we use a 'for' loop to get the values from all of the documents in the collection into the ArrayList
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         problemList.add(i++, Objects.requireNonNull(document.get("Prblm Title: ")).toString());
                         Log.d("document title: ", Objects.requireNonNull(document.get("Prblm Title: ")).toString());
@@ -258,7 +257,7 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
 
         SPB.setVisibility(View.INVISIBLE);
 
-        Toast.makeText(getApplicationContext(), "Your Great Idea Added To Data Base!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Your Great Idea Added To The Global Stock!", Toast.LENGTH_SHORT).show();
         Intent intentLogin = new Intent(this, HomeScreen.class);
         startActivity(intentLogin);
         finish();

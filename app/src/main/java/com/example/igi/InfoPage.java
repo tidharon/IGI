@@ -15,6 +15,7 @@ public class InfoPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_page);
         TextView txtDetails = findViewById(info_long);
+        //set the text for showing at the page:
         txtDetails.setText("IGI's Idea\n" +
                 "\n" +
                 "IGI established to give the world an easy and simple way to bring out solutions to daily problems that everyone is dealing with.\n" +
@@ -34,6 +35,6 @@ public class InfoPage extends AppCompatActivity {
                 "Our Logo\n" +
                 "\n" +
                 "The iconic cow-rocket designed to remind everyone that IGI's target is that even a low-cognition animal like a cow - can become the next huge startup.");
-        txtDetails.setMovementMethod(new ScrollingMovementMethod());
+        txtDetails.setMovementMethod(new ScrollingMovementMethod());    //set the text box to be scrollable and not static and uncomfortable.
     }
 }

@@ -93,18 +93,21 @@ public class signup extends AppCompatActivity implements OnClickListener {
                 return;
             }
 
-
+            //here we create a new user based by the values he submitted above:
             fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(signup.this, "Welcome!", Toast.LENGTH_SHORT).show();
                         uID = fAuth.getCurrentUser().getUid();
+                        //here we create a path to save the information about the new user:
                         documentReference = fsInfo.collection("UsersInfo").document(uID);
+                        //here we save all the info into a single object who designed for it:
                         user = new HashMap<>();
                         user.put("UserName", name);
                         user.put("Email", email);
                         user.put("Phone Number", phone);
+                        //here we put the information file into the path location and send a message to the developer approving it worked well:
                         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

@@ -34,15 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button butInfo;
     private EditText editUsername;
     private EditText editPassword;
-    private ProgressBar PBLogin;
-    private FirebaseAuth fAuth;
+    private ProgressBar PBLogin;                        //This is a variable from the layout who use for improvement of user experience
+    private FirebaseAuth fAuth;                         //this is a variable used for using the
 
-    /**
-     * This function requests permissions
-     */
-    private void requestPermission() {
+    private void requestPermission() {                  //This function request permissions from the user
         ActivityCompat.requestPermissions(MainActivity.this, new
-
                 String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO, CAMERA}, RequestPermissionCode);
     }
 
@@ -52,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (requestCode) {
             case RequestPermissionCode:
                 if (grantResults.length > 0) {
+                    //these objects are used to check the permissions request result
                     boolean StoragePermission = grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED;
                     boolean RecordPermission = grantResults[1] ==
@@ -72,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public boolean checkPermission() {
+        //these objects used to make sure permissions given:
         int result = ContextCompat.checkSelfPermission(getApplicationContext(),
                 WRITE_EXTERNAL_STORAGE);
         int result2 = ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String tag = "IGI";
         Log.d(tag, "started");
-
+            //here we make sure permissions granted:
         if (!checkPermission()) {
             requestPermission();
         }
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PBLogin = findViewById(R.id.Login_progressBar);
         fAuth = FirebaseAuth.getInstance();
 
-
+            //here we transfer the user directly to the main activity in case he's already connected to a user:
         if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), HomeScreen.class));
             finish();
@@ -118,11 +116,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v == butLogin) {
 
-            PBLogin.setVisibility(View.VISIBLE);
+            PBLogin.setVisibility(View.VISIBLE);        //showing the user that there's a process running
 
             String email = editUsername.getText().toString().trim();
             String password = editPassword.getText().toString().trim();
-
+                //makes sure details are given:
             if (TextUtils.isEmpty(email)) {
                 editUsername.setError("Please enter Your Email");
                 return;
@@ -131,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editPassword.setError("please enter password");
                 return;
             }
-
+                //checks if the details are equal to certain user in the stock and singing him in
             fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -158,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
+            //checks if the user already pressed on back button ni the last 2000 milliseconds
         if (back_pressed + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {

@@ -13,10 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeScreen extends AppCompatActivity implements View.OnClickListener {
-    /*
-    Double back press to exit app
-     */
-    private static long back_pressed;
+
+    private static long back_pressed;   //system variable gives info about the back button press
     private Button butToDiscover;
     private Button butToSolution;
     private Button butToDevelop;
@@ -63,7 +61,7 @@ public class HomeScreen extends AppCompatActivity implements View.OnClickListene
         }
         if (v == butLogout) {
             PBLogout.setVisibility(View.VISIBLE);
-            FirebaseAuth.getInstance().signOut();
+            FirebaseAuth.getInstance().signOut();   //delete the current user connected on the device
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }

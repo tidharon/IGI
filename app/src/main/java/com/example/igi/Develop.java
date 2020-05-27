@@ -49,7 +49,6 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == butInfo) {
-
             Intent intentDiscover = new Intent(this, InfoPage.class);
             startActivity(intentDiscover);
         }
@@ -59,7 +58,6 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
             String uID = fAuth.getCurrentUser().getUid();
             String userMail = fAuth.getCurrentUser().getEmail();
 
-
             if (TextUtils.isEmpty(txtTitle)) {
                 frmTitle.setError("Skill Title Needed");
 
@@ -67,13 +65,15 @@ public class Develop extends AppCompatActivity implements View.OnClickListener {
             if (TextUtils.isEmpty(txtDes)) {
                 frmDes.setError("Skill Description Needed");
             }
-
+                //here we create a path to save the info the user submitted
             DocumentReference devlpRef = devlpDB.collection("Developers").document(uID + " | " + txtTitle);
+                //this object contains the information the user submitted
             Map<String, Object> devlp = new HashMap<>();
             devlp.put("Dvlp Title: ", txtTitle);
             devlp.put("Dvlp Mail: ", userMail);
             devlp.put("Dvlp ID: ", uID);
             devlp.put("Dvlp Description:", txtDes);
+                //here we put the Map from above into the database in the path we set earlier
             devlpRef.set(devlp);
 
             Toast.makeText(getApplicationContext(), "Thank You For Helping!", Toast.LENGTH_SHORT).show();
