@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    //image for background of the activity
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="match_parent"
@@ -19,6 +19,7 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/back_signup1" />
 
+    //rocket's head for design
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="485dp"
@@ -32,6 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fldEmail"
         app:srcCompat="@drawable/cow_rocket_hmpg" />
 
+    //button to move to info page
     <ImageView
         android:id="@+id/info_but"
         android:layout_width="wrap_content"
@@ -41,6 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/info_but" />
+
 
     <TextView
         android:id="@+id/signUpTitle"

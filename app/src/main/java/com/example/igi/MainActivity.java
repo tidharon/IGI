@@ -25,7 +25,6 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int RequestPermissionCode = 1;
     private static long back_pressed;

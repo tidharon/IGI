@@ -86,20 +86,20 @@ public class Solution extends AppCompatActivity implements View.OnClickListener 
             //TODO check why selectedItem returns null
             listProblem = findViewById(R.id.problemList);
                 //this object used to contain the list of problems and the settings for the spinner in the view
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, problemTitles());
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, problemTitles());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //here we set the display type of the values list in the spinner
             listProblem.setAdapter(adapter);
                 //here we get the user's selection from the spinner by compering index of selection and value index in the list:
             listProblem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    prblmName = listProblem.getItemAtPosition(position).toString();
+                    prblmName = parent.getItemAtPosition(position).toString();
                     Log.e("problem chosen", prblmName);
+                    Log.e("problem chosen", parent.getItemAtPosition(position).toString());
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
+                    Log.e("problem not chosen", "");
                 }
             });
             try {

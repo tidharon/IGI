@@ -2,6 +2,7 @@ package com.example.igi;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
@@ -23,6 +24,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,8 +40,6 @@ public class PopupRecPage extends AppCompatActivity {
     private String recURL;
     private String uploadFile;
     private StorageReference recRef;
-    private StorageMetadata metadata;
-    private UploadTask uploadTask;
     private ProgressBar PBR;
     private FirebaseStorage storage;
     private String lastAct;
@@ -72,7 +72,6 @@ public class PopupRecPage extends AppCompatActivity {
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB); //this is the setup of the usage of the file for replay
         myAudioRecorder.setOutputFile(outputFile);
-        //TODO from the emulator the records go as .3gp file but 0KB weight and from external device still upload only "application/octet-stream" file.
         recProcess();
     }
 
@@ -117,15 +116,12 @@ public class PopupRecPage extends AppCompatActivity {
                     myAudioRecorder.release();
 
                     recRef = storage.getReference(lastAct + " Records").child(lastTitle + "/" + uploadFile);
-                    //here we set the file to fit the firebase storage conditions:
-                    metadata = new StorageMetadata.Builder().setCustomMetadata(lastID, outputFile).build();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    byte[] daata = baos.toByteArray();
-                    //here we upload the file and getting the information we need for future use
-                    uploadTask = (UploadTask) recRef.putBytes(daata, metadata).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    Uri uri = Uri.fromFile(new File(outputFile));
+                    recRef.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             recURL = recRef.toString();
+                            //here we upload the file and getting the information we need for future use
                             getIntent().putExtra("recURL", recURL);
                             myAudioRecorder = null;
                             PBR.setVisibility(View.INVISIBLE);
@@ -136,8 +132,6 @@ public class PopupRecPage extends AppCompatActivity {
                             Log.e("upload failed because ", Objects.requireNonNull(e.getMessage()));
                         }
                     });
-
-
                     Toast.makeText(getApplicationContext(), "Audio Recorded successfully", Toast.LENGTH_SHORT).show();
                 } catch (IllegalStateException e) {
                     e.printStackTrace();

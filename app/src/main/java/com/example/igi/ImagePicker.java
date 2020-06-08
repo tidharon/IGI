@@ -30,7 +30,6 @@ public class ImagePicker extends AppCompatActivity {
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
     private static final String TAG = "com.example.igi.ImagePicker";
     private static final String TEMP_IMAGE_NAME = "tempImage";
-
     public static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
 
 
@@ -135,7 +134,6 @@ public class ImagePicker extends AppCompatActivity {
         return bm;
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private static int getRotation(Context context, Uri imageUri, boolean isCamera) {
         int rotation;
@@ -189,7 +187,6 @@ public class ImagePicker extends AppCompatActivity {
         }
         return result;
     }
-
 
     private static Bitmap rotate(Bitmap bm, int rotation) {
         if (rotation != 0) {
